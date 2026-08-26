@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PRESETS = join(ROOT, 'src', 'config', 'presets');
-const REPO = 'dovidginsberg/heartwell-sites';
+const REPO = 'mozart-co/heartwell-sites';
 
 /** Pull a single-quoted string field out of a preset source file. */
 const str = (src, key) => {
