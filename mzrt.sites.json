@@ -2,6 +2,26 @@
   "repo": "mozart-co/heartwell-sites",
   "sites": [
     {
+      "slug": "allen-view",
+      "name": "Allen View Healthcare Center",
+      "domain": "allen-view.mzrt.work",
+      "url": "https://allen-view.mzrt.work",
+      "hasContent": true,
+      "install": "npm ci",
+      "build": "SITE=allen-view npm run build",
+      "outputDir": "dist"
+    },
+    {
+      "slug": "columbus",
+      "name": "Columbus Healthcare Center",
+      "domain": "columbus.mzrt.work",
+      "url": "https://columbus.mzrt.work",
+      "hasContent": true,
+      "install": "npm ci",
+      "build": "SITE=columbus npm run build",
+      "outputDir": "dist"
+    },
+    {
       "slug": "heartwell",
       "name": "Heartwell Healthcare",
       "domain": "heartwell.mzrt.work",
@@ -9,6 +29,36 @@
       "hasContent": true,
       "install": "npm ci",
       "build": "SITE=heartwell npm run build",
+      "outputDir": "dist"
+    },
+    {
+      "slug": "riverside",
+      "name": "Riverside Nursing and Rehabilitation Center",
+      "domain": "riverside.mzrt.work",
+      "url": "https://riverside.mzrt.work",
+      "hasContent": true,
+      "install": "npm ci",
+      "build": "SITE=riverside npm run build",
+      "outputDir": "dist"
+    },
+    {
+      "slug": "southbrook",
+      "name": "Southbrook Healthcare Center",
+      "domain": "southbrook.mzrt.work",
+      "url": "https://southbrook.mzrt.work",
+      "hasContent": true,
+      "install": "npm ci",
+      "build": "SITE=southbrook npm run build",
+      "outputDir": "dist"
+    },
+    {
+      "slug": "wood-glen",
+      "name": "Wood Glen Alzheimer’s Community",
+      "domain": "wood-glen.mzrt.work",
+      "url": "https://wood-glen.mzrt.work",
+      "hasContent": true,
+      "install": "npm ci",
+      "build": "SITE=wood-glen npm run build",
       "outputDir": "dist"
     }
   ]

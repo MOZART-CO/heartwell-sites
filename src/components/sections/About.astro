@@ -1,0 +1,42 @@
+---
+/**
+ * One building, described. The hub's `Manifesto` tells the company's story;
+ * this tells a single community's, in the same layout vocabulary — a photo
+ * beside the copy, then the three things that make this building itself.
+ */
+import type { Community } from '../../config/types';
+
+interface Props {
+  community: Community;
+}
+
+const { community: c } = Astro.props;
+---
+
+<section class="manifesto loc-about" id="about">
+  <div class="wrap">
+    <div class="manifesto-grid">
+      <div>
+        <h2 class="h-section reveal">About {c.shortName}.</h2>
+        <p class="lead reveal">{c.intro}</p>
+        {c.neighborhood && (
+          <p class="about-where reveal">
+            <span>Finding us</span>
+            {c.neighborhood}
+          </p>
+        )}
+      </div>
+      <div class="manifesto-photo reveal">
+        <img src={c.photos.about} alt={`Inside ${c.name}`} loading="lazy">
+      </div>
+    </div>
+    <div class="pillars">
+      {c.highlights.map((h) => (
+        <div class="pillar reveal">
+          <h3>{h.label}</h3>
+          <p>{h.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,39 @@
+---
+/**
+ * The band that keeps a standalone community site attached to the rest of the
+ * group: a line about Heartwell, and every sister building linked to its own
+ * site. On the hub this section is not used — `LocationPage` renders the
+ * in-site sister grid there instead.
+ */
+import { allCommunities, community, communityHref, hubUrl, site } from '../../config/site';
+
+const sisters = allCommunities.filter((s) => s.id !== community?.id);
+---
+
+<section class="network" id="heartwell">
+  <div class="wrap">
+    <div class="network-head">
+      <div>
+        <h2 class="h-section reveal">Part of Heartwell Healthcare.</h2>
+        <p class="lead reveal">
+          {site.legalName} is operator-led — owned and run by licensed administrators
+          who work in the buildings. {community?.shortName} is one of {allCommunities.length} communities
+          across Ohio, and every one of them is held to the same standard.
+        </p>
+      </div>
+      <a class="btn ghost reveal" href={hubUrl} rel="noopener">Visit Heartwell Healthcare</a>
+    </div>
+
+    <div class="comm-grid">
+      {sisters.map((s) => (
+        <article class="comm-card">
+          <span class="comm-city">{s.city}, {s.region}</span>
+          <h3><a href={communityHref(s)}>{s.name}</a></h3>
+          <div class="comm-addr">{s.address}</div>
+          <a class="comm-tel" href={`tel:${s.phone.replace(/[^0-9]/g, '')}`}>{s.phone}</a>
+          <div class="comm-tags">{s.tags.map((t) => <span>{t}</span>)}</div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,41 +1,71 @@
 ---
+/**
+ * The care lines on offer. With no `community`, this is the group's continuum
+ * as the hub presents it; with one, it is that building's actual services —
+ * which differ, and are the reason each community has its own site.
+ */
+import type { Community } from '../../config/types';
+
+interface Props {
+  community?: Community;
+}
+
+const { community: c } = Astro.props;
+
+const heading = c ? `Care at ${c.shortName}.` : 'Care built around the person.';
+
+const intro = c
+  ? `Every care line here runs on the same clinical depth and the same warmth. The goal never changes. Meet people where they are and move them toward home.`
+  : 'Every care line runs on the same clinical depth and the same warmth. The goal never changes. Meet people where they are and move them toward home.';
+
+const cards = c
+  ? c.services
+  : [
+      {
+        name: 'Skilled Nursing',
+        body: 'Round-the-clock licensed nursing with the clinical depth to manage complex needs close to home.',
+        photo: '/img/reception.jpg',
+      },
+      {
+        name: 'Subacute Rehabilitation',
+        body: 'Physical, occupational, and speech therapy focused on one goal. Getting people home, stronger.',
+        photo: '/img/gym.jpg',
+      },
+      {
+        name: 'Long-Term Care',
+        body: 'A true home for residents who need daily support, with dignity built into every detail.',
+        photo: '/img/hands.jpg',
+      },
+      {
+        name: 'Memory Care',
+        body: 'Specialized, secure support for residents living with Alzheimer’s and dementia, anchored at Wood Glen in Dayton.',
+        photo: '/img/visit.jpg',
+      },
+    ];
+
+// Four cards fit the hub's grid exactly; a building with five gets a row that
+// wraps, so the grid is told how many it is laying out.
+const count = cards.length;
 ---
 
   <section class="care" id="care">
     <div class="wrap">
       <div class="care-head">
-        <h2 class="h-section reveal">Care built around the person.</h2>
-        <p class="lead reveal">Every care line runs on the same clinical depth and the same warmth. The goal never changes. Meet people where they are and move them toward home.</p>
+        <h2 class="h-section reveal">{heading}</h2>
+        <p class="lead reveal">{intro}</p>
       </div>
-      <div class="care-cards">
-        <div class="care-card reveal">
-          <div class="cc-photo"><img src="/img/reception.jpg" alt="The welcome desk at a Heartwell community" loading="lazy"></div>
-          <div class="cc-body">
-            <h3>Skilled Nursing</h3>
-            <p>Round-the-clock licensed nursing with the clinical depth to manage complex needs close to home.</p>
+      <div class={`care-cards${count === 5 ? ' care-cards-5' : ''}`}>
+        {cards.map((card) => (
+          <div class="care-card reveal">
+            <div class="cc-photo">
+              <img src={card.photo} alt={c ? `${card.name} at ${c.name}` : `${card.name} at a Heartwell community`} loading="lazy">
+            </div>
+            <div class="cc-body">
+              <h3>{card.name}</h3>
+              <p>{card.body}</p>
+            </div>
           </div>
-        </div>
-        <div class="care-card reveal">
-          <div class="cc-photo"><img src="/img/gym.jpg" alt="The Heartwell rehabilitation gym" loading="lazy"></div>
-          <div class="cc-body">
-            <h3>Subacute Rehabilitation</h3>
-            <p>Physical, occupational, and speech therapy focused on one goal. Getting people home, stronger.</p>
-          </div>
-        </div>
-        <div class="care-card reveal">
-          <div class="cc-photo"><img src="/img/hands.jpg" alt="A caregiver holding a resident&rsquo;s hands" loading="lazy"></div>
-          <div class="cc-body">
-            <h3>Long-Term Care</h3>
-            <p>A true home for residents who need daily support, with dignity built into every detail.</p>
-          </div>
-        </div>
-        <div class="care-card reveal">
-          <div class="cc-photo"><img src="/img/visit.jpg" alt="Family visiting a resident" loading="lazy"></div>
-          <div class="cc-body">
-            <h3>Memory Care</h3>
-            <p>Specialized, secure support for residents living with Alzheimer&rsquo;s and dementia, anchored at Wood Glen in Dayton.</p>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   </section>

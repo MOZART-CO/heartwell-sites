@@ -25,17 +25,20 @@ const path = `/locations/${community.id}`;
 
 <Layout
   title={`${community.name} | ${community.city}, ${community.region} — ${site.name}`}
-  description={community.blurb ?? site.description}
+  description={community.blurb}
   path={path}
+  ogImage={community.photos.hero}
   navLinks={[
     { href: '/#why', label: `Why ${site.name.split(' ')[0]}` },
+    { href: '#about', label: 'About' },
     { href: '#care', label: 'Care' },
+    { href: '#life', label: 'Life here' },
     { href: '/#communities', label: 'Communities' },
-    { href: '#families', label: 'Families' },
     { href: '#careers', label: 'Careers' },
   ]}
   footerLinks={[
     { href: '/#why', label: `Why ${site.name.split(' ')[0]}` },
+    { href: '#about', label: 'About' },
     { href: '#care', label: 'Care' },
     { href: '/#communities', label: 'All communities' },
     { href: '#careers', label: 'Careers' },

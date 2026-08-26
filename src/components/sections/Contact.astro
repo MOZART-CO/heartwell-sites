@@ -1,5 +1,5 @@
 ---
-import { communities, formAction, site } from '../../config/site';
+import { communities, community, formAction, isCommunitySite, site } from '../../config/site';
 
 interface Props {
   /** Preselect a community — the community pages pass their own. */
@@ -14,6 +14,17 @@ const cityLine =
   cities.length > 1
     ? `${cities.slice(0, -1).join(', ')}, and ${cities[cities.length - 1]}, Ohio`
     : `${cities[0]}, Ohio`;
+
+/**
+ * On a community site the reader is already in one building, so the panel
+ * carries that building's own address, phone and fax rather than the corporate
+ * headquarters — and the community select collapses to a hidden field.
+ */
+const single = isCommunitySite ? community : null;
+const tel = single ? single.phone.replace(/[^0-9]/g, '') : '';
+const directions = single
+  ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(single.address)}`
+  : '';
 ---
 
 <section class="contact" id="contact">
@@ -23,20 +34,39 @@ const cityLine =
       <div>
         <h2>{heading}</h2>
         <p class="lead">Request a tour, refer a resident, or ask a question. A real person answers, usually the same day.</p>
-        <div class="c-info">
-          <div>
-            <span>EMAIL</span>
-            <a href={`mailto:${site.email}`}>{site.email}</a>
+        {single ? (
+          <div class="c-info">
+            <div>
+              <span>ADDRESS</span>
+              <p>{single.address}</p>
+              <a href={directions} target="_blank" rel="noopener">Open in Google Maps</a>
+            </div>
+            <div>
+              <span>PHONE</span>
+              <a href={`tel:${tel}`}>{single.phone}</a>
+              {single.fax && <p class="c-fine">Fax {single.fax}</p>}
+            </div>
+            <div>
+              <span>EMAIL</span>
+              <a href={`mailto:${site.email}`}>{site.email}</a>
+            </div>
           </div>
-          <div>
-            <span>HEADQUARTERS</span>
-            <p>{site.headquarters}</p>
+        ) : (
+          <div class="c-info">
+            <div>
+              <span>EMAIL</span>
+              <a href={`mailto:${site.email}`}>{site.email}</a>
+            </div>
+            <div>
+              <span>HEADQUARTERS</span>
+              <p>{site.headquarters}</p>
+            </div>
+            <div>
+              <span>{communities.length === 1 ? 'LOCATION' : 'COMMUNITIES'}</span>
+              <p>{cityLine}</p>
+            </div>
           </div>
-          <div>
-            <span>{communities.length === 1 ? 'LOCATION' : 'COMMUNITIES'}</span>
-            <p>{cityLine}</p>
-          </div>
-        </div>
+        )}
       </div>
       <form class="form-grid" id="inqForm" method="post" action={formAction} novalidate>
         <div class="field">
@@ -62,15 +92,19 @@ const cityLine =
             <option>Something else</option>
           </select>
         </div>
-        <div class="field">
-          <label for="f-comm">Community</label>
-          <select id="f-comm" name="community">
-            <option selected={!preselect}>Not sure yet</option>
-            {communities.map((c) => (
-              <option value={c.name} selected={preselect === c.id}>{c.shortName}{c.shortName === c.name ? '' : `, ${c.city}`}</option>
-            ))}
-          </select>
-        </div>
+        {single ? (
+          <input type="hidden" name="community" value={single.name}>
+        ) : (
+          <div class="field">
+            <label for="f-comm">Community</label>
+            <select id="f-comm" name="community">
+              <option selected={!preselect}>Not sure yet</option>
+              {communities.map((c) => (
+                <option value={c.name} selected={preselect === c.id}>{c.shortName}{c.shortName === c.name ? '' : `, ${c.city}`}</option>
+              ))}
+            </select>
+          </div>
+        )}
         <div class="field full">
           <label for="f-msg">Message</label>
           <textarea id="f-msg" name="message" required></textarea>

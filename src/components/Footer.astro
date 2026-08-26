@@ -1,5 +1,6 @@
 ---
-import { site } from '../config/site';
+import { community, hubUrl, isCommunitySite, site } from '../config/site';
+import { lockup, wordmarkViewBox } from '../lib/brand';
 import type { NavLink } from './Nav.astro';
 
 interface Props {
@@ -15,20 +16,34 @@ const {
     { href: '#careers', label: 'Careers' },
   ],
 } = Astro.props;
+
+const brandLabel = isCommunitySite && community ? community.name : site.name;
+const useLockup = isCommunitySite && lockup !== null;
+const tel = community ? community.phone.replace(/[^0-9]/g, '') : '';
 ---
 
 <footer>
   <div class="foot-word" aria-hidden="true">
-    <svg viewBox="0 0 473 106"><use href="#wordmark"/></svg>
+    <svg viewBox={wordmarkViewBox}><use href="#wordmark"/></svg>
   </div>
   <div class="wrap">
     <div class="foot-grid">
       <div>
         <div class="foot-brand">
-          <svg class="mark" aria-hidden="true"><use href="#mark"/></svg>
-          <svg class="word" viewBox="0 0 473 106" role="img" aria-label="Heartwell"><use href="#wordmark"/></svg>
+          {useLockup ? (
+            <svg class="lockup" viewBox={lockup?.viewBox} role="img" aria-label={brandLabel}><use href="#lockup"/></svg>
+          ) : (
+            <Fragment>
+              <svg class="mark" aria-hidden="true"><use href="#mark"/></svg>
+              <svg class="word" viewBox="0 0 473 106" role="img" aria-label={brandLabel}><use href="#wordmark"/></svg>
+            </Fragment>
+          )}
         </div>
-        <p class="foot-tag">{site.tagline} An operator-led healthcare company.</p>
+        <p class="foot-tag">
+          {isCommunitySite && community
+            ? `${site.tagline} A Heartwell Healthcare community in ${community.city}, ${community.region}.`
+            : `${site.tagline} An operator-led healthcare company.`}
+        </p>
       </div>
       <div class="foot-col">
         <h4>Explore</h4>
@@ -36,14 +51,32 @@ const {
       </div>
       <div class="foot-col">
         <h4>Contact</h4>
-        <a href={`mailto:${site.email}`}>{site.email}</a>
-        <a href={`https://${site.siteHost}`} rel="noopener">{site.siteHost}</a>
-        <p>{site.headquarters}</p>
+        {community ? (
+          <Fragment>
+            <a href={`tel:${tel}`}>{community.phone}</a>
+            <a href={`mailto:${site.email}`}>{site.email}</a>
+            <p>{community.address}</p>
+            {community.fax && <p class="foot-fine">Fax {community.fax}</p>}
+          </Fragment>
+        ) : (
+          <Fragment>
+            <a href={`mailto:${site.email}`}>{site.email}</a>
+            <a href={`https://${site.siteHost}`} rel="noopener">{site.siteHost}</a>
+            <p>{site.headquarters}</p>
+          </Fragment>
+        )}
       </div>
     </div>
     <div class="legal">
       <span>&copy; {site.copyrightYear} {site.legalName}. All rights reserved.</span>
-      <span>Skilled nursing, rehabilitation, and long-term care across Ohio.</span>
+      {isCommunitySite ? (
+        <span>
+          A <a href={hubUrl} rel="noopener">Heartwell Healthcare</a> community.
+          Skilled nursing, rehabilitation, and long-term care across Ohio.
+        </span>
+      ) : (
+        <span>Skilled nursing, rehabilitation, and long-term care across Ohio.</span>
+      )}
     </div>
   </div>
 </footer>

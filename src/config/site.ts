@@ -62,11 +62,26 @@ export const community: Community | null = site.community
   ? (BY_ID[site.community] as Community)
   : null;
 
-/** Where a community's page lives in *this* build. */
+/** True when this build is one community's own site rather than the corporate hub. */
+export const isCommunitySite = site.kind === 'community';
+
+/** Every community in the catalog, whichever site is building. */
+export const allCommunities: Community[] = COMMUNITIES;
+
+/** The corporate hub, for the "part of Heartwell" links a community site carries. */
+export const hubUrl = site.hubUrl ?? `https://${site.siteHost}`;
+
+/**
+ * Where a community's page lives in *this* build.
+ *
+ * The hub keeps every community on its own `/locations/<id>` route. A community
+ * site is its own root, and points at its sisters' sites — falling back to the
+ * hub's location page for any sister that does not have one yet.
+ */
 export function communityHref(c: Community): string {
-  return site.kind === 'community' && site.community === c.id
-    ? '/'
-    : `/locations/${c.id}`;
+  if (!isCommunitySite) return `/locations/${c.id}`;
+  if (site.community === c.id) return '/';
+  return c.siteUrl ?? `${hubUrl}/locations/${c.id}`;
 }
 
 /** `forms.mzrt.work/submit/<slug>` — the endpoint every form on this site POSTs to. */
