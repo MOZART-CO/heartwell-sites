@@ -1,0 +1,32 @@
+# Managed by the MOZART app. Publishes this repo to mzrt.work/allen-view via R2.
+# Edit build settings in the app (Sites → this site), not here.
+name: Deploy to mzrt-sites (allen-view)
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch: {}
+concurrency:
+  group: mzrt-deploy-allen-view
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install
+        run: |
+          npm ci
+      - name: Build
+        run: |
+          SITE=allen-view npm run build
+      - name: Sync to R2
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+        run: |
+          aws s3 sync "dist/" "s3://mzrt-sites/sites/allen-view/" --delete --endpoint-url "https://7a7363dbab55eaa4b3f3066f2cbadce2.r2.cloudflarestorage.com" --no-progress
+          echo "Published https://mzrt.work/allen-view"
