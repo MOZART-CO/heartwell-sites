@@ -481,6 +481,8 @@ footer{background:#221F18;color:rgba(247,243,236,.75);overflow:hidden}
    at / on a standalone community site — same component, same styles. */
 .hero.hero-loc{min-height:auto;padding:150px 0 80px}
 .hero.hero-loc .hero-inner{grid-template-columns:1.1fr .9fr}
+/* The plate itself is set inline per community (Community.photos.hero); this
+   is the fallback and owns the framing. */
 .hero.hero-loc .hero-bg{background-image:url('/img/welcome.jpg');background-position:center 42%}
 .loc-eyebrow{
   display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
@@ -512,4 +514,76 @@ footer{background:#221F18;color:rgba(247,243,236,.75);overflow:hidden}
 @media (max-width:900px){
   .hero.hero-loc .hero-inner{grid-template-columns:1fr}
   .loc-facts{grid-template-columns:1fr}
+}
+
+/* ---------- community-site branding ----------
+   A community site leads with its own horizontal lockup — heart, name and
+   descriptor in one piece of delivered artwork — instead of the corporate
+   pairing of the gold heart and the Heartwell wordmark. The artwork is flat
+   single-colour SVG rewritten to currentColor (see src/lib/brand.ts), so the
+   colour is chosen here and the same file serves the light nav and the dark
+   footer. */
+.brand .lockup{height:44px;width:auto;color:var(--sage-deep)}
+.foot-brand .lockup{height:40px;width:auto;color:var(--cream)}
+
+/* ---------- community page: about ---------- */
+.manifesto.loc-about{padding-bottom:30px}
+.about-where{
+  margin-top:26px;padding-top:20px;border-top:1px solid var(--line);
+  color:var(--ink-soft);font-size:15.5px;max-width:46ch;
+}
+.about-where span{
+  display:block;font-size:11.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:8px;
+}
+
+/* ---------- community page: life ---------- */
+.life-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:0 44px}
+.life-item{
+  display:flex;align-items:flex-start;gap:16px;
+  padding:24px 0;border-top:1px solid rgba(247,243,236,.22);
+  font-size:1.05rem;color:rgba(247,243,236,.86);
+}
+.life-mark{width:20px;height:20px;flex:none;margin-top:5px;color:var(--gold-soft)}
+
+/* ---------- community page: the rest of the group ---------- */
+.network{padding:0 0 130px}
+.network-head{
+  display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end;margin-bottom:44px;
+}
+.network-head .h-section{margin-bottom:18px}
+.network .comm-card{cursor:default}
+.network .comm-card h3 a:hover{color:var(--gold)}
+
+/* A four-cell fact strip, for buildings that publish a fax number. */
+.loc-facts-4{grid-template-columns:repeat(4,1fr)}
+
+/* The hub's link out to a community's own site. */
+.loc-site{
+  display:inline-flex;align-items:center;gap:8px;margin-top:22px;
+  font-size:14.5px;font-weight:600;color:var(--gold);
+}
+.loc-site:hover{color:var(--ink)}
+
+/* Five care lines wrap onto a second row rather than squeezing into four. */
+.care-cards-5{grid-template-columns:repeat(3,1fr)}
+
+.c-fine{font-size:13.5px;color:var(--ink-soft);margin-top:2px}
+.foot-fine{font-size:13.5px;color:rgba(247,243,236,.5)}
+.legal a{color:rgba(247,243,236,.75);text-decoration:underline;text-underline-offset:2px}
+.legal a:hover{color:#fff}
+
+@media (max-width:1000px){
+  .care-cards-5{grid-template-columns:repeat(2,1fr)}
+  .loc-facts-4{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:900px){
+  .brand .lockup{height:36px}
+  .foot-brand .lockup{height:34px}
+  .life-list{grid-template-columns:1fr;gap:0}
+  .network-head{grid-template-columns:1fr;gap:24px;align-items:start}
+  .loc-facts-4{grid-template-columns:1fr}
+}
+@media (max-width:620px){
+  .care-cards-5{grid-template-columns:1fr}
 }

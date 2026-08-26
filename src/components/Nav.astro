@@ -1,5 +1,6 @@
 ---
-import { site } from '../config/site';
+import { community, isCommunitySite, site } from '../config/site';
+import { lockup } from '../lib/brand';
 
 export interface NavLink {
   href: string;
@@ -20,13 +21,29 @@ const {
   contactHref = '#contact',
   contactLabel = 'Contact',
 } = Astro.props;
+
+/**
+ * A community site leads with the building's own lockup — heart, name and
+ * descriptor in one piece of delivered artwork. The hub keeps the corporate
+ * pairing of the gold heart and the Heartwell wordmark.
+ */
+const brandLabel = isCommunitySite && community ? community.name : site.name;
+
+// Fall back to the corporate pairing if a community site has no lockup artwork.
+const useLockup = isCommunitySite && lockup !== null;
 ---
 
 <header class="nav" id="nav">
   <div class="nav-inner">
-    <a class="brand" href={homeHref} aria-label={`${site.name} home`}>
-      <svg class="mark" aria-hidden="true"><use href="#mark"/></svg>
-      <svg class="word" viewBox="0 0 473 106" role="img" aria-label="Heartwell"><use href="#wordmark"/></svg>
+    <a class="brand" href={homeHref} aria-label={`${brandLabel} home`}>
+      {useLockup ? (
+        <svg class="lockup" viewBox={lockup?.viewBox} role="img" aria-label={brandLabel}><use href="#lockup"/></svg>
+      ) : (
+        <Fragment>
+          <svg class="mark" aria-hidden="true"><use href="#mark"/></svg>
+          <svg class="word" viewBox="0 0 473 106" role="img" aria-label={brandLabel}><use href="#wordmark"/></svg>
+        </Fragment>
+      )}
     </a>
     <nav class="nav-links" aria-label="Primary">
       {links.map((l) => <a href={l.href}>{l.label}</a>)}
@@ -41,7 +58,9 @@ const {
 <div class="mnav" id="mnav">
   {links.map((l) => <a href={l.href}>{l.label}</a>)}
   <a href={contactHref}>{contactLabel}</a>
-  <div class="mnav-foot">{site.email}</div>
+  <div class="mnav-foot">
+    {isCommunitySite && community ? `${community.phone} · ${site.email}` : site.email}
+  </div>
 </div>
 
 <script>

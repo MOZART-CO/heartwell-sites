@@ -11,16 +11,38 @@ function postalAddress(c: Community) {
   };
 }
 
-export function nursingHome(site: SiteConfig, c: Community, url: string) {
+/**
+ * One building. `logo` points at the community's own lockup, which ships in
+ * that site's asset tree; on the hub it resolves against the hub's tree, so it
+ * is only emitted for the site the community actually owns.
+ */
+export function nursingHome(
+  site: SiteConfig,
+  c: Community,
+  url: string,
+  { withLogo = false }: { withLogo?: boolean } = {},
+) {
   return {
     '@type': 'NursingHome',
     name: c.name,
     url,
+    ...(withLogo ? { logo: `${site.url}/img/logo.svg` } : {}),
     telephone: c.phone,
+    ...(c.fax ? { faxNumber: c.fax } : {}),
     address: postalAddress(c),
     geo: { '@type': 'GeoCoordinates', latitude: c.lat, longitude: c.lng },
-    parentOrganization: { '@type': 'Organization', name: site.legalName },
-    availableService: c.tags.map((t) => ({ '@type': 'MedicalTherapy', name: t })),
+    description: c.blurb,
+    ...(c.beds ? { numberOfRooms: c.beds } : {}),
+    parentOrganization: {
+      '@type': 'Organization',
+      name: site.legalName,
+      url: site.hubUrl ?? `https://${site.siteHost}`,
+    },
+    availableService: c.services.map((s) => ({
+      '@type': 'MedicalTherapy',
+      name: s.name,
+      description: s.body,
+    })),
   };
 }
 
@@ -52,5 +74,8 @@ export function organization(
 }
 
 export function communityGraph(site: SiteConfig, c: Community, url: string) {
-  return { '@context': 'https://schema.org', ...nursingHome(site, c, url) };
+  return {
+    '@context': 'https://schema.org',
+    ...nursingHome(site, c, url, { withLogo: site.kind === 'community' }),
+  };
 }

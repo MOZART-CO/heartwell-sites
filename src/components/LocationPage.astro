@@ -1,7 +1,10 @@
 ---
 import type { Community } from '../config/types';
 import { communities, communityHref, site } from '../config/site';
+import About from './sections/About.astro';
 import Care from './sections/Care.astro';
+import Life from './sections/Life.astro';
+import Network from './sections/Network.astro';
 import Promises from './sections/Promises.astro';
 import Careers from './sections/Careers.astro';
 import Contact from './sections/Contact.astro';
@@ -10,8 +13,9 @@ interface Props {
   community: Community;
   /**
    * `true` when this page is the root of the community's own site rather than a
-   * page on the corporate hub — drops the "back to all communities" link and the
-   * sister-community list, which only make sense inside the hub.
+   * page on the corporate hub. The hub keeps the "back to all communities" link
+   * and an in-site sister grid; the standalone site swaps the grid for the
+   * `Network` band, which links out to each sister's own site.
    */
   standalone?: boolean;
 }
@@ -23,7 +27,7 @@ const directions = `https://www.google.com/maps/dir/?api=1&destination=${encodeU
 ---
 
 <section class="hero hero-loc">
-  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-bg" aria-hidden="true" style={`background-image:url('${c.photos.hero}')`}></div>
   <div class="wrap hero-inner">
     <div>
       {!standalone && <a class="loc-back" href="/#communities">
@@ -37,16 +41,22 @@ const directions = `https://www.google.com/maps/dir/?api=1&destination=${encodeU
         <a class="btn gold" href="#contact">Request a tour</a>
         <a class="btn ghost" href={`tel:${tel}`}>{c.phone}</a>
       </div>
+      {!standalone && c.siteUrl && (
+        <a class="loc-site" href={c.siteUrl} rel="noopener">
+          Visit the {c.shortName} site
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </a>
+      )}
       <div class="loc-tags">{c.tags.map((t) => <span>{t}</span>)}</div>
     </div>
     <div class="loc-photo">
-      <img src="/img/welcome.jpg" alt={`Inside ${c.name}`} loading="eager" fetchpriority="high">
+      <img src={c.photos.feature} alt={`Inside ${c.name}`} loading="eager" fetchpriority="high">
     </div>
   </div>
 </section>
 
 <section class="strip">
-  <div class="wrap strip-grid loc-facts">
+  <div class={`wrap strip-grid loc-facts${c.fax ? ' loc-facts-4' : ''}`}>
     <div class="strip-cell">
       <b>Address</b>
       <span>{c.address}</span>
@@ -55,6 +65,12 @@ const directions = `https://www.google.com/maps/dir/?api=1&destination=${encodeU
       <b>Phone</b>
       <span><a href={`tel:${tel}`}>{c.phone}</a></span>
     </div>
+    {c.fax && (
+      <div class="strip-cell">
+        <b>Fax</b>
+        <span>{c.fax}</span>
+      </div>
+    )}
     <div class="strip-cell">
       <b>Directions</b>
       <span><a href={directions} target="_blank" rel="noopener">Open in Google Maps</a></span>
@@ -62,27 +78,35 @@ const directions = `https://www.google.com/maps/dir/?api=1&destination=${encodeU
   </div>
 </section>
 
-<Care />
+<About community={c} />
+
+<Care community={c} />
+
+<Life community={c} />
 
 <Promises />
 
-{!standalone && sisters.length > 0 && (
-  <section class="loc-sisters">
-    <div class="wrap">
-      <h2 class="h-section">The other {site.name.split(' ')[0]} communities.</h2>
-      <div class="comm-grid">
-        {sisters.map((s) => (
-          <article class="comm-card">
-            <span class="comm-city">{s.city}, {s.region}</span>
-            <h3><a href={communityHref(s)}>{s.name}</a></h3>
-            <div class="comm-addr">{s.address}</div>
-            <a class="comm-tel" href={`tel:${s.phone.replace(/[^0-9]/g, '')}`}>{s.phone}</a>
-            <div class="comm-tags">{s.tags.map((t) => <span>{t}</span>)}</div>
-          </article>
-        ))}
+{standalone ? (
+  <Network />
+) : (
+  sisters.length > 0 && (
+    <section class="loc-sisters">
+      <div class="wrap">
+        <h2 class="h-section">The other {site.name.split(' ')[0]} communities.</h2>
+        <div class="comm-grid">
+          {sisters.map((s) => (
+            <article class="comm-card">
+              <span class="comm-city">{s.city}, {s.region}</span>
+              <h3><a href={communityHref(s)}>{s.name}</a></h3>
+              <div class="comm-addr">{s.address}</div>
+              <a class="comm-tel" href={`tel:${s.phone.replace(/[^0-9]/g, '')}`}>{s.phone}</a>
+              <div class="comm-tags">{s.tags.map((t) => <span>{t}</span>)}</div>
+            </article>
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  )
 )}
 
 <Careers />
