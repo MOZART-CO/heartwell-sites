@@ -1,0 +1,47 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import LocationPage from '../../components/LocationPage.astro';
+import { communities, site } from '../../config/site';
+import { communityGraph } from '../../lib/schema';
+import type { Community } from '../../config/types';
+
+interface Props {
+  community: Community;
+}
+
+/**
+ * One page per community this site presents. On the corporate hub that is the
+ * whole catalog; a standalone community site renders its community at `/`
+ * instead (see src/pages/index.astro), so this route emits nothing there.
+ */
+export const getStaticPaths = () =>
+  site.kind === 'community'
+    ? []
+    : communities.map((c) => ({ params: { location: c.id }, props: { community: c } }));
+
+const { community } = Astro.props;
+const path = `/locations/${community.id}`;
+---
+
+<Layout
+  title={`${community.name} | ${community.city}, ${community.region} — ${site.name}`}
+  description={community.blurb ?? site.description}
+  path={path}
+  navLinks={[
+    { href: '/#why', label: `Why ${site.name.split(' ')[0]}` },
+    { href: '#care', label: 'Care' },
+    { href: '/#communities', label: 'Communities' },
+    { href: '#families', label: 'Families' },
+    { href: '#careers', label: 'Careers' },
+  ]}
+  footerLinks={[
+    { href: '/#why', label: `Why ${site.name.split(' ')[0]}` },
+    { href: '#care', label: 'Care' },
+    { href: '/#communities', label: 'All communities' },
+    { href: '#careers', label: 'Careers' },
+  ]}
+  homeHref="/"
+  schema={communityGraph(site, community, `${site.url}${path}`)}
+>
+  <LocationPage community={community} />
+</Layout>

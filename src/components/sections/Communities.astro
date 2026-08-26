@@ -1,0 +1,172 @@
+---
+import { communities, communityHref, site } from '../../config/site';
+
+const count = communities.length;
+const WORDS: Record<number, string> = { 1: 'One', 2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five' };
+const countWord = WORDS[count] ?? String(count);
+const cities = [...new Set(communities.map((c) => c.city))];
+const cityList =
+  cities.length > 1
+    ? `From ${cities[0]} to ${cities.slice(1).join(' to ')}, every`
+    : `In ${cities[0]}, every`;
+
+/** Only the fields the client script needs, so the payload stays small. */
+const mapData = communities.map((c) => ({
+  id: c.id,
+  name: c.name,
+  addr: c.address,
+  tel: c.phone,
+  lat: c.lat,
+  lng: c.lng,
+}));
+---
+
+<section class="communities" id="communities">
+  <div class="wrap">
+    <h2 class="h-section reveal">{countWord} {count === 1 ? 'community' : 'communities'}. One standard.</h2>
+    <p class="lead reveal">{cityList} {site.name.split(' ')[0]} community runs on the same promise. Warm care, sharp clinical work, and leadership you can find in the hallway.</p>
+    <div id="map" role="region" aria-label={`Map of ${site.name} communities in Ohio`} data-communities={JSON.stringify(mapData)}></div>
+    <div class="comm-grid" id="commGrid">
+      {communities.map((c) => (
+        <article class="comm-card reveal" data-community={c.id}>
+          <span class="comm-city">{c.city}, {c.region}</span>
+          <h3><a href={communityHref(c)}>{c.name}</a></h3>
+          <div class="comm-addr">{c.address}</div>
+          <a class="comm-tel" href={`tel:${c.phone.replace(/[^0-9]/g, '')}`}>{c.phone}</a>
+          <div class="comm-tags">{c.tags.map((t) => <span>{t}</span>)}</div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import L from 'leaflet';
+  import 'leaflet/dist/leaflet.css';
+
+  interface Pin {
+    id: string;
+    name: string;
+    addr: string;
+    tel: string;
+    lat: number;
+    lng: number;
+  }
+
+  const mapEl = document.getElementById('map');
+  const data: Pin[] = mapEl?.dataset.communities ? JSON.parse(mapEl.dataset.communities) : [];
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('.comm-card'));
+  const markers = new Map<string, L.Marker>();
+  let map: L.Map | null = null;
+
+  const setActiveCard = (id: string | null) =>
+    cards.forEach((el) => el.classList.toggle('active', el.dataset.community === id));
+
+  function focusCommunity(id: string) {
+    setActiveCard(id);
+    const pin = data.find((p) => p.id === id);
+    if (!map || !pin || !mapEl) return;
+    map.flyTo([pin.lat, pin.lng], 12, { duration: 1.1 });
+    setTimeout(() => markers.get(id)?.openPopup(), 1150);
+    window.scrollTo({
+      top: mapEl.getBoundingClientRect().top + window.scrollY - 90,
+      behavior: 'smooth',
+    });
+  }
+
+  // Clicking a card frames it on the map — but let its real links (the community
+  // page, the phone number) behave like links.
+  cards.forEach((card) => {
+    card.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) return;
+      if (card.dataset.community) focusCommunity(card.dataset.community);
+    });
+  });
+
+  // The map is a progressive enhancement: the cards above are server-rendered,
+  // so a tile or script failure costs the map and nothing else.
+  try {
+    if (!mapEl || !data.length) throw new Error('no map target');
+    const finePointer = window.matchMedia('(pointer: fine)').matches;
+    map = L.map('map', {
+      scrollWheelZoom: false,
+      zoomControl: true,
+      dragging: finePointer,
+      attributionControl: true,
+    });
+
+    const attrib =
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>';
+    let tileErrors = 0;
+    let fellBack = false;
+    const layer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: attrib,
+      subdomains: 'abcd',
+      maxZoom: 19,
+    }).addTo(map);
+    layer.on('tileerror', () => {
+      tileErrors++;
+      if (tileErrors > 3 && !fellBack && map) {
+        fellBack = true;
+        map.removeLayer(layer);
+        mapEl.classList.add('osm');
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+          maxZoom: 19,
+        }).addTo(map);
+      }
+    });
+
+    const heartPath =
+      'M12 19.4c-4.4-3-7.3-6-7.3-9.1C4.7 7.6 6.5 5.8 8.8 5.8c1.3 0 2.5.7 3.2 1.8.7-1.1 1.9-1.8 3.2-1.8 2.3 0 4.1 1.8 4.1 4.5 0 3.1-2.9 6.1-7.3 9.1z';
+    const pinSvg = () =>
+      '<svg width="44" height="44" viewBox="0 0 44 44">' +
+      '<circle cx="22" cy="22" r="20" fill="#FCFAF5" stroke="#C9AE79" stroke-width="1"/>' +
+      '<g fill="none" stroke="#B08D4F" stroke-width="1.5" stroke-linejoin="round">' +
+      '<g transform="translate(10,9.4) scale(1)"><path d="' + heartPath + '"/></g>' +
+      '<g transform="translate(14.1,13.5) scale(0.66)"><path d="' + heartPath + '"/></g>' +
+      '<g transform="translate(18.2,17.7) scale(0.32)"><path d="' + heartPath + '"/></g>' +
+      '</g></svg>';
+
+    const bounds: [number, number][] = [];
+    data.forEach((c) => {
+      const icon = L.divIcon({
+        className: 'hw-pin',
+        html: pinSvg(),
+        iconSize: [44, 44],
+        iconAnchor: [22, 22],
+        popupAnchor: [0, -24],
+      });
+      const gmaps =
+        'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(c.addr);
+      const m = L.marker([c.lat, c.lng], { icon, title: c.name }).addTo(map!);
+      m.bindPopup(
+        '<div class="pop-name">' + c.name + '</div>' +
+          '<div class="pop-addr">' + c.addr + '</div>' +
+          '<div class="pop-links"><a href="tel:' + c.tel.replace(/[^0-9]/g, '') + '">' + c.tel + '</a>' +
+          '<a href="' + gmaps + '" target="_blank" rel="noopener">Directions</a></div>',
+      );
+      m.on('click', () => setActiveCard(c.id));
+      markers.set(c.id, m);
+      bounds.push([c.lat, c.lng]);
+    });
+
+    const fit = () => map!.fitBounds(bounds, { padding: [50, 50] });
+    fit();
+    mapEl.classList.add('map-ready');
+    setTimeout(() => {
+      map!.invalidateSize();
+      fit();
+    }, 350);
+    window.addEventListener('resize', () => map!.invalidateSize());
+    window.addEventListener('orientationchange', () => {
+      setTimeout(() => {
+        map!.invalidateSize();
+        fit();
+      }, 400);
+    });
+  } catch {
+    if (mapEl) mapEl.style.display = 'none';
+  }
+</script>

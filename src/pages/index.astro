@@ -1,0 +1,75 @@
+---
+import Layout from '../layouts/Layout.astro';
+import LocationPage from '../components/LocationPage.astro';
+import Hero from '../components/sections/Hero.astro';
+import Strip from '../components/sections/Strip.astro';
+import Manifesto from '../components/sections/Manifesto.astro';
+import PhotoBand from '../components/sections/PhotoBand.astro';
+import Standard from '../components/sections/Standard.astro';
+import Care from '../components/sections/Care.astro';
+import Communities from '../components/sections/Communities.astro';
+import Promises from '../components/sections/Promises.astro';
+import Careers from '../components/sections/Careers.astro';
+import Contact from '../components/sections/Contact.astro';
+import { communities, community, communityHref, site } from '../config/site';
+import { communityGraph, organization } from '../lib/schema';
+
+/**
+ * The one route every site in this repo shares. On the corporate hub it is the
+ * full section stack; on a standalone community site it is that community's own
+ * page, rooted at `/`.
+ */
+const activeCommunity = site.kind === 'community' ? community : null;
+
+const hubNav = [
+  { href: '#why', label: `Why ${site.name.split(' ')[0]}` },
+  { href: '#care', label: 'Care' },
+  { href: '#communities', label: 'Communities' },
+  { href: '#families', label: 'Families' },
+  { href: '#careers', label: 'Careers' },
+];
+
+const communityNav = [
+  { href: '#care', label: 'Care' },
+  { href: '#families', label: 'Families' },
+  { href: '#careers', label: 'Careers' },
+];
+
+const communityFooter = [
+  { href: '#care', label: 'Care' },
+  { href: '#families', label: 'Families' },
+  { href: '#careers', label: 'Careers' },
+  { href: '#contact', label: 'Contact' },
+];
+
+// The preset owns its own title and description for the home route.
+const schema = activeCommunity
+  ? communityGraph(site, activeCommunity, site.url)
+  : organization(site, communities, site.url, communityHref);
+---
+
+<Layout
+  title={site.title}
+  description={site.description}
+  path="/"
+  navLinks={activeCommunity ? communityNav : hubNav}
+  footerLinks={activeCommunity ? communityFooter : undefined}
+  schema={schema}
+>
+  {activeCommunity ? (
+    <LocationPage community={activeCommunity} standalone />
+  ) : (
+    <Fragment>
+      <Hero />
+      <Strip />
+      <Manifesto />
+      <PhotoBand />
+      <Standard />
+      <Care />
+      <Communities />
+      <Promises />
+      <Careers />
+      <Contact />
+    </Fragment>
+  )}
+</Layout>

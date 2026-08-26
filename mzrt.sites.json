@@ -1,0 +1,15 @@
+{
+  "repo": "dovidginsberg/heartwell-sites",
+  "sites": [
+    {
+      "slug": "heartwell",
+      "name": "Heartwell Healthcare",
+      "domain": "heartwell.mzrt.work",
+      "url": "https://heartwell.mzrt.work",
+      "hasContent": true,
+      "install": "npm ci",
+      "build": "SITE=heartwell npm run build",
+      "outputDir": "dist"
+    }
+  ]
+}

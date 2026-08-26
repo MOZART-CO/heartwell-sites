@@ -1,0 +1,70 @@
+---
+import { site } from '../config/site';
+
+export interface NavLink {
+  href: string;
+  label: string;
+}
+
+interface Props {
+  /** Where the brand mark points. `#top` on a page that has its own hero. */
+  homeHref?: string;
+  links: NavLink[];
+  contactHref?: string;
+  contactLabel?: string;
+}
+
+const {
+  homeHref = '#top',
+  links,
+  contactHref = '#contact',
+  contactLabel = 'Contact',
+} = Astro.props;
+---
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href={homeHref} aria-label={`${site.name} home`}>
+      <svg class="mark" aria-hidden="true"><use href="#mark"/></svg>
+      <svg class="word" viewBox="0 0 473 106" role="img" aria-label="Heartwell"><use href="#wordmark"/></svg>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      {links.map((l) => <a href={l.href}>{l.label}</a>)}
+      <a class="btn" href={contactHref}>{contactLabel}</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="mnav" id="mnav">
+  {links.map((l) => <a href={l.href}>{l.label}</a>)}
+  <a href={contactHref}>{contactLabel}</a>
+  <div class="mnav-foot">{site.email}</div>
+</div>
+
+<script>
+  const nav = document.getElementById('nav');
+  const burger = document.getElementById('burger');
+  const mnav = document.getElementById('mnav');
+
+  if (nav) {
+    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 24);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  if (burger && mnav) {
+    const setMenu = (open: boolean) => {
+      mnav.classList.toggle('open', open);
+      burger.setAttribute('aria-expanded', String(open));
+      document.body.style.overflow = open ? 'hidden' : '';
+    };
+    burger.addEventListener('click', () => setMenu(!mnav.classList.contains('open')));
+    mnav.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mnav.classList.contains('open')) setMenu(false);
+    });
+  }
+</script>

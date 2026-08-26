@@ -1,0 +1,74 @@
+---
+import '@fontsource-variable/hanken-grotesk';
+import '../styles/site.css';
+
+import BrandSprite from '../components/BrandSprite.astro';
+import Nav, { type NavLink } from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../config/site';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Absolute or root-relative canonical path for this route. */
+  path?: string;
+  ogImage?: string;
+  navLinks: NavLink[];
+  footerLinks?: NavLink[];
+  homeHref?: string;
+  /** JSON-LD graph for this route. */
+  schema?: unknown;
+}
+
+const {
+  title,
+  description,
+  path = '/',
+  ogImage = '/img/og.jpg',
+  navLinks,
+  footerLinks,
+  homeHref,
+  schema,
+} = Astro.props;
+
+const canonical = `${site.url}${path === '/' ? '' : path}`;
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title}</title>
+<meta name="description" content={description}>
+<link rel="canonical" href={canonical}>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:title" content={site.name}>
+<meta property="og:description" content={`${site.tagline} An operator-led healthcare company with ${site.communities === 'all' ? 'five' : 'our'} communities across Ohio.`}>
+<meta property="og:type" content="website">
+<meta property="og:url" content={canonical}>
+<meta property="og:image" content={`${site.url}${ogImage}`}>
+<meta name="twitter:card" content="summary_large_image">
+{schema && <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />}
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<BrandSprite />
+
+<Nav links={navLinks} homeHref={homeHref} />
+
+<main id="top">
+  <slot />
+</main>
+
+<Footer links={footerLinks} />
+
+<script>
+  // Respect the OS reduced-motion setting the same way the original build did.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('no-anim');
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+---
+import { site } from '../config/site';
+import type { NavLink } from './Nav.astro';
+
+interface Props {
+  /** The "Explore" column. Defaults to the hub's section anchors. */
+  links?: NavLink[];
+}
+
+const {
+  links = [
+    { href: '#why', label: 'Why Heartwell' },
+    { href: '#care', label: 'Care' },
+    { href: '#communities', label: 'Communities' },
+    { href: '#careers', label: 'Careers' },
+  ],
+} = Astro.props;
+---
+
+<footer>
+  <div class="foot-word" aria-hidden="true">
+    <svg viewBox="0 0 473 106"><use href="#wordmark"/></svg>
+  </div>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">
+          <svg class="mark" aria-hidden="true"><use href="#mark"/></svg>
+          <svg class="word" viewBox="0 0 473 106" role="img" aria-label="Heartwell"><use href="#wordmark"/></svg>
+        </div>
+        <p class="foot-tag">{site.tagline} An operator-led healthcare company.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Explore</h4>
+        {links.map((l) => <a href={l.href}>{l.label}</a>)}
+      </div>
+      <div class="foot-col">
+        <h4>Contact</h4>
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+        <a href={`https://${site.siteHost}`} rel="noopener">{site.siteHost}</a>
+        <p>{site.headquarters}</p>
+      </div>
+    </div>
+    <div class="legal">
+      <span>&copy; {site.copyrightYear} {site.legalName}. All rights reserved.</span>
+      <span>Skilled nursing, rehabilitation, and long-term care across Ohio.</span>
+    </div>
+  </div>
+</footer>

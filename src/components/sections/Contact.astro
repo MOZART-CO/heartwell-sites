@@ -1,0 +1,148 @@
+---
+import { communities, formAction, site } from '../../config/site';
+
+interface Props {
+  /** Preselect a community — the community pages pass their own. */
+  preselect?: string;
+  heading?: string;
+}
+
+const { preselect, heading = 'Start the conversation.' } = Astro.props;
+
+const cities = [...new Set(communities.map((c) => c.city))];
+const cityLine =
+  cities.length > 1
+    ? `${cities.slice(0, -1).join(', ')}, and ${cities[cities.length - 1]}, Ohio`
+    : `${cities[0]}, Ohio`;
+---
+
+<section class="contact" id="contact">
+  <div class="contact-bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="contact-panel reveal">
+      <div>
+        <h2>{heading}</h2>
+        <p class="lead">Request a tour, refer a resident, or ask a question. A real person answers, usually the same day.</p>
+        <div class="c-info">
+          <div>
+            <span>EMAIL</span>
+            <a href={`mailto:${site.email}`}>{site.email}</a>
+          </div>
+          <div>
+            <span>HEADQUARTERS</span>
+            <p>{site.headquarters}</p>
+          </div>
+          <div>
+            <span>{communities.length === 1 ? 'LOCATION' : 'COMMUNITIES'}</span>
+            <p>{cityLine}</p>
+          </div>
+        </div>
+      </div>
+      <form class="form-grid" id="inqForm" method="post" action={formAction} novalidate>
+        <div class="field">
+          <label for="f-name">Full name</label>
+          <input id="f-name" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="f-phone">Phone</label>
+          <input id="f-phone" name="phone" type="tel" autocomplete="tel">
+        </div>
+        <div class="field full">
+          <label for="f-email">Email</label>
+          <input id="f-email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="f-type">I am reaching out to</label>
+          <select id="f-type" name="type">
+            <option>Request a tour</option>
+            <option>Ask about a loved one</option>
+            <option>Make a clinical referral</option>
+            <option>Connect as a vendor or supplier</option>
+            <option>Ask about careers</option>
+            <option>Something else</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-comm">Community</label>
+          <select id="f-comm" name="community">
+            <option selected={!preselect}>Not sure yet</option>
+            {communities.map((c) => (
+              <option value={c.name} selected={preselect === c.id}>{c.shortName}{c.shortName === c.name ? '' : `, ${c.city}`}</option>
+            ))}
+          </select>
+        </div>
+        <div class="field full">
+          <label for="f-msg">Message</label>
+          <textarea id="f-msg" name="message" required></textarea>
+        </div>
+        <div class="field" style="position:absolute;left:-10000px" aria-hidden="true">
+          <label for="f-gotcha">Leave this empty</label>
+          <input id="f-gotcha" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
+        </div>
+        <div class="form-foot">
+          <button class="btn" type="submit">Send message</button>
+          <p class="form-note" id="formNote" role="status" aria-live="polite">A real person reads every message. We reply the same day where we can.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('inqForm') as HTMLFormElement | null;
+  const note = document.getElementById('formNote');
+
+  if (form && note) {
+    const resting = note.textContent;
+    const button = form.querySelector<HTMLButtonElement>('button[type=submit]');
+
+    const invalid = (el: HTMLElement | null, bad: boolean) => {
+      if (el) (el as HTMLInputElement).style.borderColor = bad ? '#B0614F' : '';
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+      const name = (data.name || '').trim();
+      const email = (data.email || '').trim();
+      const message = (data.message || '').trim();
+
+      invalid(document.getElementById('f-name'), !name);
+      invalid(document.getElementById('f-email'), !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email));
+      invalid(document.getElementById('f-msg'), !message);
+
+      if (!name || !message || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+        note.textContent = 'Add your name, a valid email, and a short message so we can reply.';
+        return;
+      }
+
+      if (button) {
+        button.disabled = true;
+        button.textContent = 'Sending…';
+      }
+      note.textContent = 'Sending…';
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        form.reset();
+        note.textContent = `Thank you, ${name.split(' ')[0]} — your message is on its way. We will be in touch.`;
+        if (button) button.textContent = 'Sent';
+      } catch {
+        note.textContent =
+          'Something went wrong sending that. Please email us directly and we will pick it up.';
+        if (button) {
+          button.disabled = false;
+          button.textContent = 'Send message';
+        }
+        setTimeout(() => {
+          if (note.textContent?.startsWith('Something went wrong')) note.textContent = resting;
+        }, 8000);
+      }
+    });
+  }
+</script>
