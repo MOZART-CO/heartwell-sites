@@ -1,12 +1,16 @@
 ---
+import LayeredHeart from '../LayeredHeart.astro';
+import SectionHeart from '../SectionHeart.astro';
 import { site } from '../../config/site';
 ---
 
   <section class="careers" id="careers">
     <div class="wrap">
-      <div class="careers-inner reveal">
-        <div class="careers-bg" aria-hidden="true"></div>
-        <div class="careers-content">
+      <div class="forest-panel careers-inner reveal">
+        <svg class="s-mark" viewBox="157.6 139.7 936.4 949.4" aria-hidden="true"><use href="#mark"/></svg>
+        <LayeredHeart tone="dark" />
+        <div class="fp-content careers-content">
+          <SectionHeart tone="cream" />
           <h2 class="h-section">Wear the badge <span class="h-em">like you own the place</span>.</h2>
           <p class="lead">We hire people who treat residents like their own grandparents. Warm with families. Sharp on the clinical details. Clear and honest in every conversation. If that sounds like you, we want to meet you.</p>
           <a class="btn light" href={`mailto:${site.careersEmail}`}>{site.careersEmail}</a>

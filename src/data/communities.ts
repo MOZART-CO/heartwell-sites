@@ -40,7 +40,7 @@ export const COMMUNITIES: Community[] = [
       {
         name: 'Skilled Nursing',
         body: 'Licensed nursing on every shift, with the clinical depth to take residents other buildings turn down.',
-        photo: '/img/hero.jpg',
+        photo: '/img/field.jpg',
       },
       {
         name: 'Subacute Rehabilitation',
@@ -60,7 +60,7 @@ export const COMMUNITIES: Community[] = [
       {
         name: 'Respite Care',
         body: 'Short stays that give a family caregiver a genuine break, with the same nursing everyone else here gets.',
-        photo: '/img/visit.jpg',
+        photo: '/img/bench.jpg',
       },
     ],
     highlights: [
@@ -83,7 +83,7 @@ export const COMMUNITIES: Community[] = [
       'Family Nights a few times a year',
       'Holiday events, including Trunk or Treat in the fall',
     ],
-    photos: { hero: '/img/lobby.jpg', feature: '/img/welcome.jpg', about: '/img/reception.jpg' },
+    photos: { hero: '/img/field.jpg', feature: '/img/garden-path.jpg', about: '/img/hands-held.jpg' },
     siteUrl: 'https://allen-view.mzrt.work',
   },
   {
@@ -131,7 +131,7 @@ export const COMMUNITIES: Community[] = [
       {
         name: 'Respite Care',
         body: 'A planned short stay so a family caregiver can have a surgery, a holiday, or a week of sleep.',
-        photo: '/img/visit.jpg',
+        photo: '/img/bench.jpg',
       },
     ],
     highlights: [
@@ -154,7 +154,7 @@ export const COMMUNITIES: Community[] = [
       'Family involved in the care plan from the first meeting',
       'Sunday visitors welcome without an appointment',
     ],
-    photos: { hero: '/img/welcome.jpg', feature: '/img/embrace.jpg', about: '/img/lobby.jpg' },
+    photos: { hero: '/img/field.jpg', feature: '/img/hands-held.jpg', about: '/img/garden-path.jpg' },
     siteUrl: 'https://southbrook.mzrt.work',
   },
   {
@@ -182,7 +182,7 @@ export const COMMUNITIES: Community[] = [
       {
         name: 'Short-Term Recovery',
         body: 'You arrive from a hospital with a goal and a date. We build the plan backward from the date.',
-        photo: '/img/hero.jpg',
+        photo: '/img/field.jpg',
       },
       {
         name: 'Physical Rehabilitation',
@@ -225,7 +225,7 @@ export const COMMUNITIES: Community[] = [
       'Happy hour on the calendar, not as a joke',
       'An annual prom night, with a Prom King and Prom Queen crowned',
     ],
-    photos: { hero: '/img/reception.jpg', feature: '/img/lobby.jpg', about: '/img/welcome.jpg' },
+    photos: { hero: '/img/field.jpg', feature: '/img/garden-path.jpg', about: '/img/bench.jpg' },
     siteUrl: 'https://columbus.mzrt.work',
   },
   {
@@ -252,7 +252,7 @@ export const COMMUNITIES: Community[] = [
       {
         name: 'Short-Term Recovery',
         body: 'The stretch between the hospital and the front door of your own house. We make it as short as it should be.',
-        photo: '/img/hero.jpg',
+        photo: '/img/field.jpg',
       },
       {
         name: 'Physical Therapy',
@@ -295,7 +295,7 @@ export const COMMUNITIES: Community[] = [
       'Community outings into Dayton',
       'Bingo, crafts, and long strolls around the campus',
     ],
-    photos: { hero: '/img/visit.jpg', feature: '/img/lobby.jpg', about: '/img/office.jpg' },
+    photos: { hero: '/img/field.jpg', feature: '/img/garden-path.jpg', about: '/img/hands-held.jpg' },
     siteUrl: 'https://riverside.mzrt.work',
   },
   {
@@ -324,7 +324,7 @@ export const COMMUNITIES: Community[] = [
       {
         name: 'Alzheimer’s & Dementia Care',
         body: 'The whole building, not a wing. Routine, security and staff trained for this and nothing else.',
-        photo: '/img/lobby.jpg',
+        photo: '/img/garden-path.jpg',
       },
       {
         name: 'Memory Care Planning',
@@ -367,7 +367,7 @@ export const COMMUNITIES: Community[] = [
       'Therapy dog visits on a regular schedule',
       'Group outings, planned around what the day actually allows',
     ],
-    photos: { hero: '/img/embrace.jpg', feature: '/img/hands.jpg', about: '/img/visit.jpg' },
+    photos: { hero: '/img/field.jpg', feature: '/img/hands-held.jpg', about: '/img/bench.jpg' },
     siteUrl: 'https://wood-glen.mzrt.work',
   },
 ];
