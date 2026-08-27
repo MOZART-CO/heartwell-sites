@@ -70,7 +70,7 @@ export const COMMUNITIES: Community[] = [
       },
       {
         label: 'Built for complex cases',
-        body: '124 beds and the staffing to match. When a discharge planner has a hard one, this is the phone number.',
+        body: '124 beds and the staffing to match. Discharge planners trust us with their most complex referrals.',
       },
       {
         label: 'Springfield, not somewhere else',
@@ -115,7 +115,7 @@ export const COMMUNITIES: Community[] = [
       },
       {
         name: 'Alzheimer’s & Dementia Care',
-        body: 'A dedicated program with routine, calm and staff who know what a hard afternoon looks like before it arrives.',
+        body: 'A dedicated program built on routine, calm, and staff who know each resident well enough to stay a step ahead.',
         photo: '/img/icons.jpg',
       },
       {
@@ -201,7 +201,7 @@ export const COMMUNITIES: Community[] = [
       },
       {
         name: 'Long-Term Care',
-        body: 'For residents who are staying, a home with routine, company and someone who notices a bad day.',
+        body: 'For residents who are staying, a home with routine, company, and people who notice the little things.',
         photo: '/img/hands.jpg',
       },
     ],
@@ -333,12 +333,12 @@ export const COMMUNITIES: Community[] = [
       },
       {
         name: 'Behavioral Health',
-        body: 'Psychiatric support on site, because a hard week is a clinical event and should be treated as one.',
+        body: 'Psychiatric support on site, so every resident gets whole-person care from one familiar team.',
         photo: '/img/office.jpg',
       },
       {
         name: 'Physical, Occupational & Speech Therapy',
-        body: 'Therapy delivered the way dementia requires it — short, familiar, repeated, and never rushed.',
+        body: 'Therapy delivered the way dementia requires it — short, familiar, repeated, and always at the resident’s pace.',
         photo: '/img/gym.jpg',
       },
       {
