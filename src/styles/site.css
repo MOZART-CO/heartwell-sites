@@ -386,8 +386,7 @@ html.no-anim .reveal,html.no-anim .reveal-hero{opacity:1;transform:none;transiti
 }
 #map.map-ready{opacity:1}
 .no-anim #map{transition:none}
-.leaflet-tile-pane{filter:sepia(.24) saturate(.78) brightness(1.04) contrast(.96) hue-rotate(-8deg)}
-#map.osm .leaflet-tile-pane{filter:sepia(.3) saturate(.55) brightness(1.05) contrast(.92) hue-rotate(-10deg)}
+.leaflet-tile-pane{filter:sepia(.3) saturate(.5) brightness(1.05) contrast(.9) hue-rotate(-10deg)}
 .leaflet-control-zoom a{
   background:var(--card)!important;color:var(--ink)!important;
   border:1px solid rgba(41,39,31,.12)!important;

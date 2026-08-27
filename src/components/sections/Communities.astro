@@ -98,27 +98,22 @@ const mapData = communities.map((c) => ({
       attributionControl: true,
     });
 
-    const attrib =
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>';
-    let tileErrors = 0;
-    let fellBack = false;
-    const layer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-      attribution: attrib,
-      subdomains: 'abcd',
+    // OpenStreetMap's own tiles: no API key, no watermark. The stylesheet
+    // mutes them into the brand palette. If tiles never arrive at all, the
+    // map removes itself — the server-rendered cards are the real content.
+    const layer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19,
     }).addTo(map);
+    let loadedOne = false;
+    let tileErrors = 0;
+    layer.on('tileload', () => {
+      loadedOne = true;
+    });
     layer.on('tileerror', () => {
       tileErrors++;
-      if (tileErrors > 3 && !fellBack && map) {
-        fellBack = true;
-        map.removeLayer(layer);
-        mapEl.classList.add('osm');
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-          maxZoom: 19,
-        }).addTo(map);
-      }
+      if (tileErrors > 6 && !loadedOne) mapEl.style.display = 'none';
     });
 
     const heartPath =
