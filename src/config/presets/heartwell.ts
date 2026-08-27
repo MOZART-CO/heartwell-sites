@@ -7,11 +7,11 @@ export const preset: SiteConfig = {
 
   name: 'Heartwell Healthcare',
   legalName: 'Heartwell Healthcare',
-  tagline: 'Warm. Capable. Present.',
+  tagline: 'Warm. Skilled. Present.',
   title:
     'Heartwell Healthcare | Operator-Led Skilled Nursing and Rehabilitation in Ohio',
   description:
-    'Heartwell Healthcare is an operator-led company running five skilled nursing and rehabilitation communities across Springfield, Dayton, and Columbus, Ohio. Warm. Capable. Present.',
+    'Heartwell Healthcare is an operator-led company running five skilled nursing and rehabilitation communities across Springfield, Dayton, and Columbus, Ohio. Warm. Skilled. Present.',
 
   url: 'https://heartwell.mzrt.work',
   domain: 'heartwell.mzrt.work',

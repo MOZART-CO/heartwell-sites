@@ -98,7 +98,7 @@ export interface SiteConfig {
   name: string;
   /** Full legal entity name, for the footer and structured data. */
   legalName: string;
-  /** Short tagline — "Warm. Capable. Present." */
+  /** Short tagline — "Warm. Skilled. Present." */
   tagline: string;
   /** `<title>` and meta description for the home route. */
   title: string;

@@ -4,6 +4,8 @@
  * uses for the Heartwell Standard, carrying this community's own calendar.
  */
 import type { Community } from '../../config/types';
+import LayeredHeart from '../LayeredHeart.astro';
+import SectionHeart from '../SectionHeart.astro';
 
 interface Props {
   community: Community;
@@ -14,8 +16,10 @@ const { community: c } = Astro.props;
 
 <section class="standard life" id="life">
   <svg class="s-mark" viewBox="157.6 139.7 936.4 949.4" aria-hidden="true"><use href="#mark"/></svg>
+  <LayeredHeart tone="dark" />
   <div class="wrap">
-    <h2 class="h-section reveal">Life at {c.shortName}.</h2>
+    <SectionHeart tone="cream" class="reveal" />
+    <h2 class="h-section reveal">Life at <span class="h-em">{c.shortName}</span>.</h2>
     <p class="s-sub reveal">
       The parts of the week that do not appear on a care plan, and that residents
       notice first.

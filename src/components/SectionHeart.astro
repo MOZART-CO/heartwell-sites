@@ -1,0 +1,36 @@
+---
+/**
+ * The small heart set above a section heading — the quiet signature the
+ * boards put over their titles. Two nested fills of the shared silhouette,
+ * so even at 26px it reads as the layered heart rather than a generic icon.
+ *
+ * Tones (colours live in site.css):
+ *   `sage` — for light grounds (deep sage core in a soft sage shell).
+ *   `gold` — the selective gold moment, for light grounds.
+ *   `cream` — for the deep-green bands.
+ */
+import { HEART_H, HEART_PATH, HEART_W } from '../lib/heart';
+
+interface Props {
+  tone?: 'sage' | 'gold' | 'cream';
+  class?: string;
+}
+
+const { tone = 'sage', class: className = '' } = Astro.props;
+
+const CX = HEART_W / 2;
+const CY = HEART_H / 2 + 6;
+---
+
+<svg
+  class={`sheart sheart-${tone} ${className}`.trim()}
+  viewBox={`0 0 ${HEART_W} ${HEART_H}`}
+  aria-hidden="true"
+>
+  <path class="sh-outer" d={HEART_PATH} />
+  <path
+    class="sh-inner"
+    d={HEART_PATH}
+    transform={`rotate(-2 ${CX} ${CY}) translate(${CX} ${CY}) scale(0.55) translate(${-CX} ${-CY})`}
+  />
+</svg>

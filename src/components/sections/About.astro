@@ -5,6 +5,7 @@
  * beside the copy, then the three things that make this building itself.
  */
 import type { Community } from '../../config/types';
+import SectionHeart from '../SectionHeart.astro';
 
 interface Props {
   community: Community;
@@ -14,10 +15,12 @@ const { community: c } = Astro.props;
 ---
 
 <section class="manifesto loc-about" id="about">
+  <svg class="hcontour hc-tr" viewBox="157.6 139.7 936.4 949.4" aria-hidden="true"><use href="#mark"/></svg>
   <div class="wrap">
     <div class="manifesto-grid">
       <div>
-        <h2 class="h-section reveal">About {c.shortName}.</h2>
+        <SectionHeart tone="gold" class="reveal" />
+        <h2 class="h-section reveal">About <span class="h-em">{c.shortName}</span>.</h2>
         <p class="lead reveal">{c.intro}</p>
         {c.neighborhood && (
           <p class="about-where reveal">

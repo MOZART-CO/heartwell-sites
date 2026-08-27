@@ -1,0 +1,50 @@
+---
+/**
+ * The layered "paper-cut" Heartwell heart from the approved boards: five
+ * copies of the shared heart silhouette stacked inward, each layer a step
+ * deeper on the sage scale, with a soft shadow between layers so the stack
+ * reads as cut paper rather than flat rings.
+ *
+ * Tones (set in site.css as `--lh-1`…`--lh-5` on the tone class):
+ *   `sage`  — the boards' hero treatment: light sage stepping to a deep core.
+ *   `mist`  — translucent creams over photography, for the hub hero.
+ *   `cream` — near-tone-on-tone for quiet backgrounds.
+ *   `dark`  — faint deep-green-on-deep-green, for the forest bands.
+ */
+import { HEART_H, HEART_PATH, HEART_W } from '../lib/heart';
+
+interface Props {
+  tone?: 'sage' | 'mist' | 'cream' | 'dark';
+  class?: string;
+  id?: string;
+}
+
+const { tone = 'sage', class: className = '', id } = Astro.props;
+
+const CX = HEART_W / 2;
+const CY = HEART_H / 2 + 6; // the visual centre sits a touch below geometric centre
+
+/** Each inner layer shrinks and wobbles a little, like hand-cut layers. */
+const layers = [
+  { s: 1, r: 0 },
+  { s: 0.82, r: -2.5 },
+  { s: 0.65, r: 2 },
+  { s: 0.48, r: -1.5 },
+  { s: 0.31, r: 2.5 },
+];
+---
+
+<svg
+  class={`lheart lheart-${tone} ${className}`.trim()}
+  id={id}
+  viewBox={`-14 -14 ${HEART_W + 28} ${HEART_H + 28}`}
+  aria-hidden="true"
+>
+  {layers.map((l, i) => (
+    <path
+      class={`lh lh-${i + 1}`}
+      d={HEART_PATH}
+      transform={`rotate(${l.r} ${CX} ${CY}) translate(${CX} ${CY}) scale(${l.s}) translate(${-CX} ${-CY})`}
+    />
+  ))}
+</svg>

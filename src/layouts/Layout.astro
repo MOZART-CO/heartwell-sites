@@ -61,6 +61,14 @@ const ogDescription =
 <meta property="og:image" content={`${site.url}${ogImage}`}>
 <meta name="twitter:card" content="summary_large_image">
 {schema && <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />}
+<script is:inline>
+  // Stamped before first paint: `.reveal` elements only start hidden once the
+  // page is known to have JavaScript, so the content is never lost without it.
+  document.documentElement.classList.add('js');
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('no-anim');
+  }
+</script>
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
@@ -76,9 +84,24 @@ const ogDescription =
 <Footer links={footerLinks} />
 
 <script>
-  // Respect the OS reduced-motion setting the same way the original build did.
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.documentElement.classList.add('no-anim');
+  // The dimensional rise-in the boards' layering implies: each `.reveal`
+  // element lifts into place as it enters the viewport, once.
+  const targets = document.querySelectorAll('.reveal, .reveal-hero');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add('in');
+            io.unobserve(e.target);
+          }
+        }
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.05 },
+    );
+    targets.forEach((el) => io.observe(el));
+  } else {
+    targets.forEach((el) => el.classList.add('in'));
   }
 </script>
 </body>

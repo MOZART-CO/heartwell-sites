@@ -91,7 +91,7 @@ export const preset: SiteConfig = {
 
   name: c.name,
   legalName: 'Heartwell Healthcare',
-  tagline: 'Warm. Capable. Present.',
+  tagline: 'Warm. Skilled. Present.',
   title: \`\${c.name} | \${c.city}, \${c.region} — Skilled Nursing and Rehabilitation\`,
   description: c.blurb ?? '',
 

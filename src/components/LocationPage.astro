@@ -49,8 +49,8 @@ const directions = `https://www.google.com/maps/dir/?api=1&destination=${encodeU
       )}
       <div class="loc-tags">{c.tags.map((t) => <span>{t}</span>)}</div>
     </div>
-    <div class="loc-photo">
-      <img src={c.photos.feature} alt={`Inside ${c.name}`} loading="eager" fetchpriority="high">
+    <div class="loc-photo heart-stack">
+      <img class="photo-heart" src={c.photos.feature} alt={`Inside ${c.name}`} loading="eager" fetchpriority="high">
     </div>
   </div>
 </section>
@@ -91,6 +91,7 @@ const directions = `https://www.google.com/maps/dir/?api=1&destination=${encodeU
 ) : (
   sisters.length > 0 && (
     <section class="loc-sisters">
+      <svg class="hcontour hc-tr" viewBox="157.6 139.7 936.4 949.4" aria-hidden="true"><use href="#mark"/></svg>
       <div class="wrap">
         <h2 class="h-section">The other {site.name.split(' ')[0]} communities.</h2>
         <div class="comm-grid">

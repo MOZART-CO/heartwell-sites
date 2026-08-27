@@ -44,8 +44,12 @@ node scripts/build-all.mjs     # smoke-test every site -> dist-<slug>/
 astro.config.mjs             publicDir keyed by SITE, format:'file', trailingSlash:'never'
 public/<slug>/               one complete media tree per site (img/, favicon.svg)
 src/
-  styles/site.css            the shared design system — the original build's CSS, plus
-                             the community-site chrome and sections
+  styles/site.css            the shared design system — the 2026 brand-board language
+                             (tokens, signature devices, section styling) for every site
+  lib/heart.ts               the one heart silhouette all signature devices draw from
+  components/
+    LayeredHeart.astro       the layered paper-cut heart (sage/mist/cream/dark tones)
+    SectionHeart.astro       the small heart set above section headings
   data/communities.ts        THE community catalog: one entry per building — services,
                              contacts, activities, photography, everything the pages say
   assets/
@@ -77,6 +81,38 @@ contacts, forms slug, which communities the site presents) or the community
 catalog. Nothing under `src/` references a site by name — `site.ts` discovers
 presets with `import.meta.glob`, so **dropping in a preset file is the only
 wiring a new site needs**.
+
+## The design language
+
+`src/styles/site.css` is the single source of the Heartwell visual language,
+translated from the approved 2026 brand boards. Corporate establishes it; every
+facility site compiles against the same file and components, so each community
+inherits the identical DNA while keeping its own name, contacts, services,
+photography and copy (all data, in the preset + catalog).
+
+The system, in brief:
+
+- **Palette** — soft sage grounds (`--sage-mist`, `--sage-light`), deep forest
+  panels (`--forest`, `--forest-deep`), warm cream (`--cream`), and *selective*
+  gold (`--gold`) reserved for CTAs, small heart accents, and one premium panel.
+- **The layered heart** — `LayeredHeart.astro` stacks five copies of the shared
+  silhouette (`src/lib/heart.ts`) into the boards' paper-cut ripple. It is the
+  hub's hero device and the texture inside the deep-green bands.
+- **Photography in the heart** — the same silhouette is registered as the
+  `#heart-clip` clip-path (see `BrandSprite.astro`); `.photo-heart` inside a
+  `.heart-stack` clips a plate into the heart with sage echo layers behind it.
+  Community heroes and the hub's testimonial band use it.
+- **Contour fields** — the brand's five-ring mark, oversized and faint
+  (`.hcontour`), gives light sections the boards' subtle ripple texture.
+- **Section hearts** — `SectionHeart.astro` sets the boards' small heart above
+  headings (sage or gold on light grounds, cream-gold on dark).
+- **Type** — Hanken Grotesk, large and light, with the boards' two-tone
+  headline emphasis available as `.h-em`.
+- **Motion** — content rises in on scroll (`.reveal`), the hero heart settles
+  layer by layer then breathes. Everything renders complete without JavaScript
+  and respects `prefers-reduced-motion`.
+
+Tagline everywhere: **"Warm. Skilled. Present."**
 
 ## How a community site differs from the hub
 
