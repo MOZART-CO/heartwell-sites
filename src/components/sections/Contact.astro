@@ -170,13 +170,13 @@ const directions = single
         if (button) button.textContent = 'Sent';
       } catch {
         note.textContent =
-          'Something went wrong sending that. Please email us directly and we will pick it up.';
+          'That message did not send. Please email us directly and we will pick it up.';
         if (button) {
           button.disabled = false;
           button.textContent = 'Send message';
         }
         setTimeout(() => {
-          if (note.textContent?.startsWith('Something went wrong')) note.textContent = resting;
+          if (note.textContent?.startsWith('That message did not send')) note.textContent = resting;
         }, 8000);
       }
     });
