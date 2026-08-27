@@ -38,7 +38,7 @@ const cards = c
       {
         name: 'Memory Care',
         body: 'Specialized, secure support for residents living with Alzheimer’s and dementia, anchored at Wood Glen in Dayton.',
-        photo: '/img/visit.jpg',
+        photo: '/img/bench.jpg',
       },
     ];
 
@@ -65,13 +65,9 @@ const count = cards.length;
       <div class={`care-cards${count === 5 ? ' care-cards-5' : ''}`}>
         {cards.map((card) => (
           <div class="care-card reveal">
-            <div class="cc-photo">
-              <img src={card.photo} alt={c ? `${card.name} at ${c.name}` : `${card.name} at a Heartwell community`} loading="lazy">
-            </div>
-            <div class="cc-body">
-              <h3>{card.name}</h3>
-              <p>{card.body}</p>
-            </div>
+            <SectionHeart tone="sage" class="cc-heart" />
+            <h3>{card.name}</h3>
+            <p>{card.body}</p>
           </div>
         ))}
       </div>
