@@ -1,5 +1,6 @@
 ---
 import { communities, community, formAction, isCommunitySite, site } from '../../config/site';
+import SectionHeart from '../SectionHeart.astro';
 
 interface Props {
   /** Preselect a community — the community pages pass their own. */
@@ -32,6 +33,7 @@ const directions = single
   <div class="wrap">
     <div class="contact-panel reveal">
       <div>
+        <SectionHeart tone="gold" />
         <h2>{heading}</h2>
         <p class="lead">Request a tour, refer a resident, or ask a question. A real person answers, usually the same day.</p>
         {single ? (

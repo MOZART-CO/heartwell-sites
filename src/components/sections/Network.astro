@@ -6,15 +6,18 @@
  * in-site sister grid there instead.
  */
 import { allCommunities, community, communityHref, hubUrl, site } from '../../config/site';
+import SectionHeart from '../SectionHeart.astro';
 
 const sisters = allCommunities.filter((s) => s.id !== community?.id);
 ---
 
 <section class="network" id="heartwell">
+  <svg class="hcontour hc-tr" viewBox="157.6 139.7 936.4 949.4" aria-hidden="true"><use href="#mark"/></svg>
   <div class="wrap">
     <div class="network-head">
       <div>
-        <h2 class="h-section reveal">Part of Heartwell Healthcare.</h2>
+        <SectionHeart tone="sage" class="reveal" />
+        <h2 class="h-section reveal">Part of <span class="h-em">Heartwell Healthcare</span>.</h2>
         <p class="lead reveal">
           {site.legalName} is operator-led — owned and run by licensed administrators
           who work in the buildings. {community?.shortName} is one of {allCommunities.length} communities

@@ -1,19 +1,20 @@
 ---
+import LayeredHeart from '../LayeredHeart.astro';
 import { site } from '../../config/site';
 ---
 
   <section class="promises" id="families">
     <div class="wrap prom-grid">
       <div class="prom sage reveal">
-        <svg class="p-mark" aria-hidden="true"><use href="#mark"/></svg>
+        <LayeredHeart tone="dark" />
         <div>
           <h3>We answer the phone.</h3>
           <p>We know your mother&rsquo;s name. We call you before you have to call us. And when something goes wrong, we tell you the truth.</p>
           <a href={`mailto:${site.email}`}>Talk to us about a loved one</a>
         </div>
       </div>
-      <div class="prom charcoal reveal" id="partners">
-        <svg class="p-mark" aria-hidden="true"><use href="#mark"/></svg>
+      <div class="prom gold reveal" id="partners">
+        <LayeredHeart tone="dark" />
         <div>
           <h3>Send us the hard discharges.</h3>
           <p>We accept quickly, communicate clearly, and manage clinically complex residents well. A referral to Heartwell should make you look good.</p>

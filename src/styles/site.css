@@ -1,20 +1,54 @@
+/* ============================================================
+   The Heartwell design system.
+
+   One stylesheet, every site: the corporate hub and each community site
+   compile against this file, so the visual language is inherited — never
+   copied — and a change here lands everywhere at once.
+
+   Translated from the approved 2026 brand boards:
+   — soft sage grounds, deep forest panels, warm cream, selective gold;
+   — the layered paper-cut heart as the signature device (LayeredHeart.astro),
+     with the same silhouette clipping photography (.photo-heart / #heart-clip);
+   — faint heart-contour fields as background texture (.hcontour);
+   — large light-weight type, generous whitespace, dimensional layering.
+   ============================================================ */
+
 :root{
+  /* grounds */
   --cream:#F7F3EC;
   --cream-2:#EFE8DB;
   --card:#FCFAF5;
+  /* ink */
   --ink:#29271F;
   --ink-soft:#5C574B;
+  /* selective gold */
   --gold:#B08D4F;
   --gold-soft:#C9AE79;
   --gold-faint:#E4D6B8;
+  /* the sage scale — the boards' spine */
+  --sage-mist:#E9ECDF;
+  --sage-light:#CBD3BC;
+  --sage-2:#AEBB98;
   --sage:#7E8E6F;
   --sage-deep:#49543E;
+  --forest:#3E4834;
+  --forest-2:#333C2B;
+  --forest-deep:#20261A;
+  /* the layered-heart steps, light ground */
+  --ripple-1:#E4E8D9;
+  --ripple-2:#D4DCC4;
+  --ripple-3:#BFCBA8;
+  --ripple-4:#9DAE83;
+  --ripple-5:#6F805A;
   --line:rgba(41,39,31,.14);
-  --radius:22px;
+  --line-sage:rgba(73,84,62,.18);
+  --radius:28px;
+  --radius-lg:38px;
+  --ease:cubic-bezier(.22,1,.36,1);
   --font:'Hanken Grotesk Variable','Hanken Grotesk',-apple-system,system-ui,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:84px;overflow-x:clip}
+html{scroll-behavior:smooth;scroll-padding-top:110px;overflow-x:clip}
 body{
   background:var(--cream);
   color:var(--ink);
@@ -37,14 +71,17 @@ a{color:inherit;text-decoration:none}
 /* ---------- shared ---------- */
 .wrap{width:min(1180px,92vw);margin-inline:auto}
 .h-display{
-  font-weight:350;letter-spacing:-0.028em;line-height:1.04;
-  font-size:clamp(2.5rem,6.4vw,4.6rem);
+  font-weight:330;letter-spacing:-0.032em;line-height:1.02;
+  font-size:clamp(2.8rem,7vw,5.2rem);
 }
 .h-section{
-  font-weight:400;letter-spacing:-0.024em;line-height:1.12;
-  font-size:clamp(1.9rem,4vw,3rem);
+  font-weight:380;letter-spacing:-0.026em;line-height:1.1;
+  font-size:clamp(2rem,4.3vw,3.3rem);
   max-width:20ch;
+  text-wrap:balance;
 }
+/* The boards' two-tone headline: part of the line carried a step heavier. */
+.h-em{font-weight:560}
 .lead{
   color:var(--ink-soft);font-size:clamp(1.05rem,1.6vw,1.25rem);
   line-height:1.65;max-width:56ch;
@@ -52,47 +89,132 @@ a{color:inherit;text-decoration:none}
 .btn{
   display:inline-flex;align-items:center;gap:10px;
   padding:15px 30px;border-radius:999px;
-  background:var(--ink);color:var(--cream);
+  background:var(--forest);color:var(--cream);
   font-size:15px;font-weight:500;letter-spacing:.01em;
-  transition:transform .35s cubic-bezier(.22,1,.36,1), background .35s, box-shadow .35s;
-  border:1px solid var(--ink);
+  transition:transform .35s var(--ease), background .35s, box-shadow .35s;
+  border:1px solid var(--forest);
 }
-.btn:hover{transform:translateY(-2px);background:#3A372C;box-shadow:0 14px 30px -14px rgba(41,39,31,.45)}
-.btn.ghost{background:transparent;color:var(--ink);border:1px solid rgba(41,39,31,.3)}
-.btn.ghost:hover{background:rgba(41,39,31,.05);box-shadow:none}
-.btn.light{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+.btn:hover{transform:translateY(-2px);background:var(--sage-deep);box-shadow:0 14px 30px -14px rgba(51,60,43,.5)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid rgba(73,84,62,.38)}
+.btn.ghost:hover{background:rgba(126,142,111,.1);box-shadow:none}
+.btn.light{background:var(--cream);color:var(--forest);border-color:var(--cream)}
 .btn.light:hover{background:#fff}
+.btn.gold{
+  background:linear-gradient(135deg,#C9AE79,#AE8B4D);
+  border-color:transparent;color:#2A2415;
+  box-shadow:0 14px 30px -14px rgba(176,141,79,.55);
+}
+.btn.gold:hover{background:linear-gradient(135deg,#D3BA87,#B99653);box-shadow:0 18px 36px -14px rgba(176,141,79,.6)}
 section{position:relative}
 
+/* ---------- signature: the layered paper-cut heart ----------
+   Each layer's geometry lives in its SVG transform attribute, so CSS here
+   only ever touches fill, filter and opacity — never `transform`. */
+.lheart{display:block;width:100%;height:auto;overflow:visible}
+/* light grounds — the boards' hero treatment */
+.lheart-sage .lh-1{fill:var(--ripple-1);filter:drop-shadow(0 8px 14px rgba(51,60,43,.10))}
+.lheart-sage .lh-2{fill:var(--ripple-2);filter:drop-shadow(0 8px 14px rgba(51,60,43,.12))}
+.lheart-sage .lh-3{fill:var(--ripple-3);filter:drop-shadow(0 7px 12px rgba(51,60,43,.14))}
+.lheart-sage .lh-4{fill:var(--ripple-4);filter:drop-shadow(0 6px 10px rgba(51,60,43,.16))}
+.lheart-sage .lh-5{fill:var(--ripple-5);filter:drop-shadow(0 5px 9px rgba(51,60,43,.20))}
+/* frosted, over photography */
+.lheart-mist .lh-1{fill:rgba(247,243,236,.30);filter:drop-shadow(0 10px 18px rgba(41,39,31,.10))}
+.lheart-mist .lh-2{fill:rgba(247,243,236,.38);filter:drop-shadow(0 9px 16px rgba(41,39,31,.11))}
+.lheart-mist .lh-3{fill:rgba(240,241,229,.52);filter:drop-shadow(0 8px 14px rgba(41,39,31,.12))}
+.lheart-mist .lh-4{fill:rgba(216,222,199,.68);filter:drop-shadow(0 7px 12px rgba(41,39,31,.14))}
+.lheart-mist .lh-5{fill:rgba(111,128,90,.85);filter:drop-shadow(0 6px 10px rgba(41,39,31,.18))}
+/* whisper-quiet, cream-on-cream */
+.lheart-cream .lh-1{fill:rgba(126,142,111,.07)}
+.lheart-cream .lh-2{fill:rgba(126,142,111,.09)}
+.lheart-cream .lh-3{fill:rgba(126,142,111,.11)}
+.lheart-cream .lh-4{fill:rgba(126,142,111,.14)}
+.lheart-cream .lh-5{fill:rgba(126,142,111,.18)}
+/* tone-on-tone for the forest bands */
+.lheart-dark .lh-1{fill:rgba(247,243,236,.045)}
+.lheart-dark .lh-2{fill:rgba(247,243,236,.06)}
+.lheart-dark .lh-3{fill:rgba(247,243,236,.075)}
+.lheart-dark .lh-4{fill:rgba(247,243,236,.09)}
+.lheart-dark .lh-5{fill:rgba(247,243,236,.11)}
 
-/* ---------- nav ---------- */
-.nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  transition:background .4s,border-color .4s,backdrop-filter .4s;
-  border-bottom:1px solid transparent;
+/* ---------- signature: the small heart over a heading ---------- */
+.sheart{display:block;width:26px;height:auto;margin-bottom:18px}
+.sheart-sage .sh-outer{fill:rgba(126,142,111,.28)}
+.sheart-sage .sh-inner{fill:var(--sage-deep)}
+.sheart-gold .sh-outer{fill:var(--gold-faint)}
+.sheart-gold .sh-inner{fill:var(--gold)}
+.sheart-cream .sh-outer{fill:rgba(247,243,236,.22)}
+.sheart-cream .sh-inner{fill:var(--gold-soft)}
+
+/* ---------- signature: photography inside the heart ---------- */
+.photo-heart{
+  clip-path:url(#heart-clip);
+  aspect-ratio:200/190;
+  width:100%;height:auto;object-fit:cover;
 }
-.nav.scrolled{
-  background:rgba(247,243,236,.78);
-  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
-  border-bottom-color:var(--line);
+/* the dimensional stack — sage echo layers behind the clipped plate */
+.heart-stack{position:relative;filter:drop-shadow(0 30px 50px rgba(41,49,31,.28))}
+.heart-stack::before,.heart-stack::after{
+  content:"";position:absolute;inset:0;
+  clip-path:url(#heart-clip);pointer-events:none;
 }
+.heart-stack::before{background:rgba(126,142,111,.22);transform:scale(1.12) rotate(-3deg)}
+.heart-stack::after{background:rgba(126,142,111,.32);transform:scale(1.055) rotate(2deg)}
+.heart-stack .photo-heart{position:relative;z-index:1}
+
+/* ---------- signature: the faint heart-contour field ---------- */
+.hcontour{
+  position:absolute;pointer-events:none;color:var(--sage-deep);opacity:.06;
+  width:520px;max-width:70vw;height:auto;
+}
+.hcontour.hc-tr{top:-120px;right:-140px}
+.hcontour.hc-bl{bottom:-160px;left:-170px;width:620px}
+.hcontour.hc-cream{color:var(--cream);opacity:.05}
+
+/* ---------- reveal on scroll ----------
+   The content is server-rendered and visible without JavaScript; only once
+   the layout script stamps `html.js` do elements start hidden and rise in. */
+html.js .reveal,html.js .reveal-hero{
+  opacity:0;transform:translateY(20px);
+  transition:opacity .9s var(--ease),transform .9s var(--ease);
+}
+html.js .reveal.in,html.js .reveal-hero.in{opacity:1;transform:none}
+html.js .reveal-hero[data-h="2"]{transition-delay:.08s}
+html.js .reveal-hero[data-h="3"]{transition-delay:.16s}
+html.js .reveal-hero[data-h="4"]{transition-delay:.3s}
+html.js .reveal-hero[data-h="5"]{transition-delay:.42s}
+html.no-anim .reveal,html.no-anim .reveal-hero{opacity:1;transform:none;transition:none}
+
+/* ---------- nav ----------
+   A floating glass bar — the contact panel's material, made chrome. */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 0}
 .nav-inner{
-  width:min(1280px,94vw);margin-inline:auto;
+  width:min(1240px,94vw);margin-inline:auto;
   display:flex;align-items:center;justify-content:space-between;
-  padding:18px 0;
+  padding:10px 12px 10px 26px;
+  background:rgba(252,250,245,.78);
+  -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
+  border:1px solid rgba(73,84,62,.16);
+  border-radius:999px;
+  box-shadow:0 18px 40px -30px rgba(41,49,31,.35);
+  transition:box-shadow .4s,background .4s;
+}
+.nav.scrolled .nav-inner{
+  background:rgba(252,250,245,.88);
+  box-shadow:0 22px 48px -28px rgba(41,49,31,.45);
 }
 .brand{display:flex;align-items:center;gap:12px;color:var(--ink)}
-.brand .mark{width:34px;height:34px;color:var(--gold)}
+.brand .mark{width:30px;height:30px;color:var(--gold)}
 .brand .word{height:17px;width:auto;color:var(--ink)}
 .nav-links{display:flex;align-items:center;gap:34px}
 .nav-links a{font-size:14.5px;font-weight:500;color:var(--ink-soft);transition:color .25s}
-.nav-links a:hover{color:var(--ink)}
-.nav-links .btn{padding:11px 22px;font-size:14px}
+.nav-links a:hover{color:var(--sage-deep)}
+.nav-links a.btn{padding:11px 22px;font-size:14px;color:var(--cream)}
+.nav-links a.btn:hover{color:var(--cream)}
 .burger{display:none;background:none;border:0;cursor:pointer;padding:8px;color:var(--ink)}
 .burger svg{display:block}
 
 .mnav{
-  position:fixed;inset:0;z-index:99;background:var(--cream);
+  position:fixed;inset:0;z-index:99;background:var(--sage-mist);
   display:flex;flex-direction:column;justify-content:center;
   padding:0 8vw;gap:8px;
   opacity:0;pointer-events:none;transition:opacity .35s;
@@ -100,127 +222,124 @@ section{position:relative}
 .mnav.open{opacity:1;pointer-events:auto}
 .mnav a{
   font-size:clamp(1.8rem,7vw,2.6rem);font-weight:400;letter-spacing:-0.02em;
-  padding:10px 0;border-bottom:1px solid var(--line);color:var(--ink);
+  padding:10px 0;border-bottom:1px solid var(--line-sage);color:var(--ink);
 }
 .mnav a:last-of-type{border-bottom:0}
 .mnav .mnav-foot{margin-top:28px;color:var(--ink-soft);font-size:14px}
 
-/* ---------- hero ---------- */
+/* ---------- hero ----------
+   A clean, quiet canvas: the type owns the space, the layered heart floats
+   beside it, and the photography sits below in a cinematic rounded plate —
+   never behind the words. */
 .hero{
-  min-height:100svh;
-  display:flex;align-items:center;
-  padding:140px 0 90px;
+  padding:190px 0 30px;
   position:relative;overflow:hidden;
 }
-.hero-bg{
-  position:absolute;inset:0;z-index:0;
-  background:url('/img/hero.jpg') center 30%/cover no-repeat;
+.hero::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(1100px 560px at 82% 4%, rgba(126,142,111,.13), rgba(126,142,111,0) 68%);
 }
-.hero-bg::after{
-  content:"";position:absolute;inset:0;
-  background:
-    linear-gradient(to bottom, rgba(247,243,236,.30), rgba(247,243,236,.42) 62%, var(--cream) 97%),
-    linear-gradient(100deg, rgba(247,243,236,.95) 0%, rgba(247,243,236,.74) 38%, rgba(247,243,236,.22) 72%, rgba(247,243,236,.06) 100%);
-}
-.hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:4vw}
-.hero h1{margin:0 0 26px}
+.hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1.2fr .8fr;align-items:center;gap:5vw;margin-bottom:72px}
+.hero h1{margin:0 0 28px}
 .h-display .dot{color:var(--gold)}
-.btn.gold{
-  background:linear-gradient(135deg,#C9AE79,#AE8B4D);
-  border-color:transparent;color:#2A2415;
-  box-shadow:0 14px 30px -14px rgba(176,141,79,.55);
-}
-.btn.gold:hover{background:linear-gradient(135deg,#D3BA87,#B99653);box-shadow:0 18px 36px -14px rgba(176,141,79,.6)}
 .hero h1 .w{display:inline-block}
-.hero .lead{margin-bottom:38px}
+.hero .lead{margin-bottom:40px}
 .hero-ctas{display:flex;gap:14px;flex-wrap:wrap}
 .hero-mark{
-  color:var(--gold);width:min(30vw,420px);margin-inline:auto;
+  width:min(23vw,330px);margin-inline:auto;
   position:relative;
-  filter:drop-shadow(0 24px 40px rgba(176,141,79,.22));
 }
-.hero-mark::before{
-  content:"";position:absolute;inset:-16%;border-radius:50%;
-  background:radial-gradient(closest-side, rgba(247,243,236,.9), rgba(247,243,236,0));
+.hero-plate{
+  position:relative;z-index:2;
+  border-radius:var(--radius-lg);overflow:hidden;
+  border:1px solid var(--line-sage);
+  box-shadow:0 50px 90px -55px rgba(41,49,31,.5);
 }
-.hero-mark svg{position:relative}
-.hero-mark svg{width:100%;height:auto;display:block}
-.ring{transform-box:fill-box;transform-origin:center}
-.hero-scroll{
-  position:absolute;bottom:34px;left:50%;transform:translateX(-50%);z-index:2;
-  color:var(--ink-soft);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;
-  display:flex;flex-direction:column;align-items:center;gap:8px;
-}
-.hero-scroll svg{animation:dip 2.2s ease-in-out infinite}
-@keyframes dip{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+.hero-plate img{width:100%;height:min(64vh,600px);object-fit:cover;object-position:center 34%}
 
-@keyframes ringIn{
-  from{opacity:0;transform:scale(.82)}
-  to{opacity:1;transform:scale(1)}
+@keyframes layerIn{
+  from{opacity:0}
+  to{opacity:1}
 }
 @keyframes breathe{
   0%,100%{transform:scale(1)}
   50%{transform:scale(1.014)}
 }
-.hero-mark.animate .ring{opacity:0;animation:ringIn 1s cubic-bezier(.22,1,.36,1) forwards}
-.hero-mark.animate .ring:nth-child(5){animation-delay:.15s}
-.hero-mark.animate .ring:nth-child(4){animation-delay:.3s}
-.hero-mark.animate .ring:nth-child(3){animation-delay:.45s}
-.hero-mark.animate .ring:nth-child(2){animation-delay:.6s}
-.hero-mark.animate .ring:nth-child(1){animation-delay:.75s}
-.hero-mark.breathing svg{animation:breathe 7s ease-in-out infinite}
+/* the paper-cut layers settle in outermost-first, like the stack being laid */
+.hero-mark.animate .lh{opacity:0;animation:layerIn .9s var(--ease) forwards}
+.hero-mark.animate .lh-2{animation-delay:.14s}
+.hero-mark.animate .lh-3{animation-delay:.28s}
+.hero-mark.animate .lh-4{animation-delay:.42s}
+.hero-mark.animate .lh-5{animation-delay:.56s}
+.hero-mark.breathing .lheart{animation:breathe 7s ease-in-out infinite}
 
-/* ---------- fact strip ---------- */
-.strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+/* ---------- fact strip (a soft sage card) ---------- */
+.strip{padding:0 0 150px}
+.strip-panel{
+  background:var(--sage-mist);
+  border:1px solid rgba(73,84,62,.12);
+  border-radius:var(--radius-lg);
+  padding:16px clamp(28px,4vw,48px);
+}
 .strip-grid{display:grid;grid-template-columns:repeat(3,1fr)}
-.strip-cell{padding:34px 34px 34px 0}
-.strip-cell + .strip-cell{border-left:1px solid var(--line);padding-left:34px}
-.strip-cell b{display:block;font-size:1.25rem;font-weight:600;letter-spacing:-0.01em;margin-bottom:4px}
+.strip-cell{padding:30px 34px 30px 0}
+.strip-cell + .strip-cell{border-left:1px solid var(--line-sage);padding-left:34px}
+.strip-cell b{display:block;font-size:1.2rem;font-weight:600;letter-spacing:-0.01em;margin-bottom:4px;color:var(--sage-deep)}
 .strip-cell span{color:var(--ink-soft);font-size:15px}
 
 /* ---------- manifesto ---------- */
-.manifesto{padding:130px 0 100px}
+.manifesto{padding:0 0 150px;overflow:hidden}
 .manifesto-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center;margin-bottom:80px}
 .manifesto .h-section{max-width:24ch;margin-bottom:30px}
-.manifesto-photo{border-radius:var(--radius);overflow:hidden;box-shadow:0 34px 70px -40px rgba(41,39,31,.35)}
+.manifesto-photo{border-radius:var(--radius);overflow:hidden;box-shadow:0 34px 70px -40px rgba(41,49,31,.4)}
 .manifesto-photo img{width:100%;height:min(58vh,520px);object-fit:cover}
 .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:44px}
-.pillar{border-top:1px solid var(--line);padding-top:26px}
-.pillar h3{font-size:1.15rem;font-weight:600;letter-spacing:-0.01em;margin-bottom:10px}
+.pillar{border-top:1px solid var(--line-sage);padding-top:26px}
+.pillar h3{font-size:1.15rem;font-weight:600;letter-spacing:-0.01em;margin-bottom:10px;color:var(--sage-deep)}
 .pillar p{color:var(--ink-soft);font-size:15.5px}
 
-/* ---------- photo quote ---------- */
-.photoband{padding:20px 0 120px}
-.photo-frame{border-radius:var(--radius);overflow:hidden;position:relative}
-.photo-frame img{width:100%;height:min(72vh,640px);object-fit:cover}
-.quote-card{
-  position:relative;z-index:3;
-  width:min(560px,90%);
-  margin:-110px auto 0;
-  background:rgba(252,250,245,.82);
-  -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
-  border:1px solid rgba(255,255,255,.65);
-  border-radius:var(--radius);
-  padding:38px 42px;
-  box-shadow:0 30px 60px -30px rgba(41,39,31,.35);
+/* ---------- testimonial band ----------
+   The family-feedback board: a soft sage panel, the quote set large, and the
+   photograph held inside the heart. */
+.tband{padding:0 0 150px}
+.tband-panel{
+  position:relative;overflow:hidden;
+  background:linear-gradient(150deg,#D3DAC5,#C3CDB2);
+  border:1px solid rgba(73,84,62,.12);
+  border-radius:var(--radius-lg);
+  padding:clamp(44px,6vw,88px);
+  display:grid;grid-template-columns:1.05fr .95fr;
+  gap:clamp(36px,5vw,72px);align-items:center;
 }
-.quote-card blockquote{
-  font-size:clamp(1.25rem,2.2vw,1.6rem);font-weight:400;letter-spacing:-0.015em;line-height:1.35;
-  margin-bottom:16px;
+.tband-quote{position:relative;z-index:1}
+.tband-quote blockquote{
+  font-size:clamp(1.5rem,2.9vw,2.3rem);font-weight:380;letter-spacing:-0.02em;line-height:1.28;
+  color:var(--forest-2);margin-bottom:22px;max-width:22ch;
 }
-.quote-card cite{font-style:normal;color:var(--ink-soft);font-size:14.5px}
+.tband-quote cite{font-style:normal;color:var(--sage-deep);font-size:15px;max-width:40ch;display:block}
+.tband-photo{position:relative;z-index:1;width:min(36vw,400px);margin-inline:auto}
+.tband .hcontour{color:var(--sage-deep);opacity:.07}
 
-/* ---------- standard ---------- */
-.standard{
-  background:linear-gradient(168deg,#525E45 0%,#3E4834 55%,#333C2B 100%);
-  color:var(--cream);padding:130px 0;overflow:hidden;
+/* ---------- standard / life (the deep-green panel) ---------- */
+.standard{padding:0 0 150px}
+.forest-panel{
+  position:relative;overflow:hidden;
+  background:linear-gradient(168deg,#4C5741 0%,#3B462F 55%,#2F3924 100%);
+  color:var(--cream);
+  border-radius:var(--radius-lg);
+  padding:clamp(48px,6vw,92px);
+  box-shadow:0 50px 90px -55px rgba(30,37,22,.6);
 }
-.standard .s-mark{
+.forest-panel .s-mark{
   position:absolute;top:-90px;right:-110px;width:460px;color:var(--cream);
-  opacity:.06;pointer-events:none;
+  opacity:.07;pointer-events:none;
 }
+.forest-panel .lheart-dark{
+  position:absolute;bottom:-140px;left:-120px;width:480px;pointer-events:none;
+}
+.fp-content{position:relative;z-index:1}
 .standard .h-section{margin-bottom:14px;max-width:24ch}
-.standard .s-sub{color:rgba(247,243,236,.66);margin-bottom:64px;font-size:1.05rem;max-width:52ch}
+.standard .s-sub{color:rgba(247,243,236,.66);margin-bottom:56px;font-size:1.05rem;max-width:52ch}
 .ledger{border-top:1px solid rgba(247,243,236,.22);position:relative}
 .ledger-row{
   display:grid;grid-template-columns:300px 1fr;gap:30px;
@@ -234,33 +353,34 @@ section{position:relative}
 .ledger-row:hover h3{color:var(--gold-faint)}
 
 /* ---------- care ---------- */
-.care{padding:130px 0}
+.care{padding:0 0 150px}
 .care-head{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;margin-bottom:56px}
 .care-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .care-card{
-  background:var(--card);border:1px solid rgba(41,39,31,.08);
+  background:var(--card);border:1px solid var(--line-sage);
   border-radius:var(--radius);padding:0;
   position:relative;overflow:hidden;
-  transition:transform .4s cubic-bezier(.22,1,.36,1),box-shadow .4s;
+  transition:transform .4s var(--ease),box-shadow .4s;
 }
-.care-card:hover{transform:translateY(-5px);box-shadow:0 26px 44px -28px rgba(41,39,31,.3)}
+.care-card:hover{transform:translateY(-5px);box-shadow:0 26px 44px -28px rgba(51,60,43,.35)}
 .cc-photo{height:185px;overflow:hidden}
-.cc-photo img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.22,1,.36,1)}
+.cc-photo img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
 .care-card:hover .cc-photo img{transform:scale(1.05)}
 .cc-body{padding:24px 26px 32px}
-.care-card h3{font-size:1.12rem;font-weight:600;margin-bottom:10px;letter-spacing:-0.01em}
+.care-card h3{font-size:1.12rem;font-weight:600;margin-bottom:10px;letter-spacing:-0.01em;color:var(--sage-deep)}
 .care-card p{color:var(--ink-soft);font-size:15px}
 
 /* ---------- communities ---------- */
-.communities{padding:20px 0 130px}
+.communities{padding:0 0 150px;overflow:hidden}
+.communities .wrap{position:relative;z-index:1}
 .communities .h-section{margin-bottom:22px}
 .communities .lead{margin-bottom:52px}
 #map{
   opacity:0;transition:opacity .8s ease;
   height:min(66vh,560px);
   border-radius:var(--radius);
-  border:1px solid rgba(41,39,31,.1);
-  box-shadow:0 34px 70px -40px rgba(41,39,31,.35);
+  border:1px solid var(--line-sage);
+  box-shadow:0 34px 70px -40px rgba(41,49,31,.4);
   z-index:1;
   background:var(--cream-2);
 }
@@ -290,16 +410,16 @@ section{position:relative}
 
 .comm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:26px}
 .comm-card{
-  background:var(--card);border:1px solid rgba(41,39,31,.08);
+  background:var(--card);border:1px solid var(--line-sage);
   border-radius:var(--radius);padding:28px;cursor:pointer;
-  transition:transform .4s cubic-bezier(.22,1,.36,1),box-shadow .4s,border-color .3s;
+  transition:transform .4s var(--ease),box-shadow .4s,border-color .3s;
   text-align:left;font-family:var(--font);color:var(--ink);width:100%;
 }
-.comm-card:hover{transform:translateY(-4px);box-shadow:0 24px 44px -28px rgba(41,39,31,.3)}
-.comm-card.active{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold), 0 24px 44px -28px rgba(41,39,31,.3)}
+.comm-card:hover{transform:translateY(-4px);box-shadow:0 24px 44px -28px rgba(51,60,43,.35)}
+.comm-card.active{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold), 0 24px 44px -28px rgba(51,60,43,.35)}
 .comm-city{
   display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--sage-deep);background:rgba(126,142,111,.14);
+  color:var(--sage-deep);background:rgba(126,142,111,.16);
   padding:5px 12px;border-radius:999px;margin-bottom:16px;
 }
 .comm-card h3{font-size:1.13rem;font-weight:600;letter-spacing:-0.01em;line-height:1.3;margin-bottom:10px}
@@ -308,30 +428,41 @@ section{position:relative}
 .comm-tel:hover{color:var(--gold)}
 .comm-tags{display:flex;flex-wrap:wrap;gap:6px}
 .comm-tags span{
-  font-size:11.5px;color:var(--ink-soft);border:1px solid var(--line);
+  font-size:11.5px;color:var(--ink-soft);border:1px solid var(--line-sage);
   padding:4px 10px;border-radius:999px;
 }
 
 /* ---------- promises ---------- */
-.promises{padding:0 0 130px}
+.promises{padding:0 0 150px}
 .prom-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .prom{
   border-radius:var(--radius);padding:56px 48px;color:var(--cream);
   min-height:380px;display:flex;flex-direction:column;justify-content:flex-end;
   position:relative;overflow:hidden;
 }
-.prom .p-mark{position:absolute;top:-40px;right:-40px;width:230px;opacity:.1;color:var(--cream)}
+.prom .p-mark{position:absolute;top:-60px;right:-60px;width:300px;pointer-events:none}
 .prom h3{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:400;letter-spacing:-0.02em;margin-bottom:16px}
 .prom p{color:rgba(247,243,236,.82);max-width:44ch;font-size:16px}
 .prom a{color:var(--gold-faint);font-weight:600;font-size:15px;margin-top:18px;display:inline-block}
 .prom a:hover{color:#fff}
-.prom.sage{background:linear-gradient(160deg,#535F47,#3E4834)}
-.prom.charcoal{background:linear-gradient(160deg,#333026,#221F18)}
+.prom > div{position:relative;z-index:1}
+.prom.sage{background:linear-gradient(160deg,#55624A,#3B462F)}
+/* the selective-gold panel, straight off the boards' gold screens */
+.prom.gold{background:linear-gradient(150deg,#D2A94D,#A97C25);color:#2A2210}
+.prom.gold p{color:rgba(42,34,16,.78)}
+.prom.gold a{color:#4A3A12}
+.prom.gold a:hover{color:#2A2210}
+.prom.gold .lheart-dark .lh-1{fill:rgba(255,244,214,.10)}
+.prom.gold .lheart-dark .lh-2{fill:rgba(255,244,214,.13)}
+.prom.gold .lheart-dark .lh-3{fill:rgba(255,244,214,.16)}
+.prom.gold .lheart-dark .lh-4{fill:rgba(255,244,214,.20)}
+.prom.gold .lheart-dark .lh-5{fill:rgba(255,244,214,.26)}
+.prom .lheart-dark{position:absolute;top:-60px;right:-60px;width:300px;pointer-events:none}
 
 /* ---------- careers ---------- */
-.careers{padding:0 0 130px}
+.careers{padding:0 0 150px}
 .careers-inner{
-  position:relative;border-radius:var(--radius);overflow:hidden;
+  position:relative;border-radius:var(--radius-lg);overflow:hidden;
   padding:clamp(52px,7vw,96px);
   min-height:480px;display:flex;align-items:flex-end;
   color:var(--cream);
@@ -342,7 +473,7 @@ section{position:relative}
 }
 .careers-bg::after{
   content:"";position:absolute;inset:0;
-  background:linear-gradient(96deg,rgba(40,44,29,.88) 6%,rgba(40,44,29,.52) 48%,rgba(40,44,29,.12) 100%);
+  background:linear-gradient(96deg,rgba(38,45,28,.9) 6%,rgba(38,45,28,.52) 48%,rgba(38,45,28,.12) 100%);
 }
 .careers-content{position:relative;z-index:2;max-width:600px}
 .careers .h-section{margin-bottom:20px;color:var(--cream)}
@@ -356,15 +487,15 @@ section{position:relative}
 }
 .contact-bg::after{
   content:"";position:absolute;inset:0;
-  background:linear-gradient(to bottom,rgba(41,39,31,.34),rgba(41,39,31,.55));
+  background:linear-gradient(to bottom,rgba(43,52,33,.38),rgba(36,43,27,.6));
 }
 .contact-panel{
   position:relative;z-index:2;
-  background:rgba(252,250,245,.88);
+  background:rgba(252,250,245,.9);
   -webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
   border:1px solid rgba(255,255,255,.6);
-  border-radius:26px;
-  box-shadow:0 44px 90px -40px rgba(20,18,12,.55);
+  border-radius:var(--radius-lg);
+  box-shadow:0 44px 90px -40px rgba(19,24,13,.6);
   display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(36px,4vw,64px);
   padding:clamp(34px,4.5vw,58px);
 }
@@ -376,7 +507,7 @@ section{position:relative}
 .c-info{display:flex;flex-direction:column;gap:14px}
 .c-info a{font-weight:600;color:var(--ink)}
 .c-info a:hover{color:var(--gold)}
-.c-info span{display:block;font-size:12px;font-weight:600;letter-spacing:.05em;color:var(--ink-soft);margin-bottom:2px}
+.c-info span{display:block;font-size:12px;font-weight:600;letter-spacing:.05em;color:var(--sage-deep);margin-bottom:2px}
 .c-info p{font-size:15px;color:var(--ink)}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .field{display:flex;flex-direction:column;gap:7px}
@@ -385,7 +516,7 @@ section{position:relative}
 .field input,.field select,.field textarea{
   font-family:var(--font);font-size:15.5px;color:var(--ink);
   background:rgba(255,255,255,.8);
-  border:1px solid rgba(41,39,31,.18);border-radius:13px;
+  border:1px solid rgba(73,84,62,.28);border-radius:13px;
   padding:13px 15px;width:100%;
   transition:border-color .25s,box-shadow .25s;
   -webkit-appearance:none;appearance:none;
@@ -402,8 +533,8 @@ section{position:relative}
 .form-foot{grid-column:1/-1;display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:4px}
 .form-note{font-size:13px;color:var(--ink-soft)}
 
-/* ---------- footer ---------- */
-footer{background:#221F18;color:rgba(247,243,236,.75);overflow:hidden}
+/* ---------- footer (the deepest green in the system) ---------- */
+footer{background:var(--forest-deep);color:rgba(247,243,236,.75);overflow:hidden}
 .foot-word{
   width:min(1180px,92vw);margin:70px auto 0;color:var(--gold);opacity:.16;
 }
@@ -437,32 +568,38 @@ footer{background:#221F18;color:rgba(247,243,236,.75);overflow:hidden}
   .manifesto-grid{grid-template-columns:1fr;gap:34px;margin-bottom:60px}
   .manifesto-photo img{height:min(48vh,420px)}
   .contact-panel{grid-template-columns:1fr;gap:34px}
+  .tband-panel{grid-template-columns:1fr;gap:44px}
+  .tband-photo{width:min(64vw,380px)}
+  .tband-quote blockquote{max-width:none}
 }
 @media (max-width:900px){
-  .hero-scroll{display:none}
-  .standard .s-mark{width:300px;top:-60px;right:-90px}
+  .forest-panel .s-mark{width:300px;top:-60px;right:-90px}
+  .forest-panel .lheart-dark{width:320px;bottom:-100px;left:-90px}
+  .forest-panel{padding:44px 26px}
   .careers-inner{min-height:520px;padding:44px 28px}
   .careers-bg{background-position:center 35%}
   .contact{padding:90px 0}
+  .nav{padding:10px 0}
+  .nav-inner{padding:8px 8px 8px 18px}
   .nav-links{display:none}
   .burger{display:block}
-  .hero-inner{grid-template-columns:1fr;gap:0}
-  .hero-mark{
-    order:-1;width:84px;margin:0 0 30px;
-    filter:drop-shadow(0 12px 22px rgba(176,141,79,.3));
-  }
-  .hero-mark::before{inset:-30%}
-  .hero{padding-top:130px}
+  .hero-inner{grid-template-columns:1fr;gap:0;margin-bottom:52px}
+  .hero-mark{order:-1;width:110px;margin:0 0 30px}
+  .hero{padding-top:140px}
+  .hero-plate img{height:48vh}
+  .strip{padding-bottom:110px}
+  .strip-panel{padding:8px 24px}
   .strip-grid{grid-template-columns:1fr}
-  .strip-cell{padding:22px 0}
-  .strip-cell + .strip-cell{border-left:0;border-top:1px solid var(--line);padding-left:0}
+  .strip-cell{padding:20px 0}
+  .strip-cell + .strip-cell{border-left:0;border-top:1px solid var(--line-sage);padding-left:0}
   .care-head{grid-template-columns:1fr;gap:18px}
   .prom-grid{grid-template-columns:1fr}
   .prom{min-height:0;padding:44px 32px}
   .ledger-row{grid-template-columns:1fr;gap:8px;padding:24px 0}
   .foot-grid{grid-template-columns:1fr;gap:34px}
-  .quote-card{margin-top:-70px;padding:30px 28px}
-  .photo-frame img{height:56vh}
+  .hcontour.hc-tr{width:320px;top:-80px;right:-100px}
+  .hcontour.hc-bl{width:380px;bottom:-110px;left:-120px}
+  .manifesto,.tband,.standard,.care,.communities,.promises,.careers,.network,.loc-sisters{padding-bottom:110px}
 }
 @media (max-width:620px){
   .care-cards{grid-template-columns:1fr}
@@ -470,6 +607,8 @@ footer{background:#221F18;color:rgba(247,243,236,.75);overflow:hidden}
   #map{height:56vh}
   .form-grid{grid-template-columns:1fr}
   .cc-photo{height:200px}
+  .tband-panel{padding:38px 28px}
+  .tband-photo{width:min(78vw,340px)}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important}
@@ -479,19 +618,16 @@ footer{background:#221F18;color:rgba(247,243,236,.75);overflow:hidden}
 /* ---------- community page ----------
    One community's own page. Lives at /locations/<id> on the corporate hub and
    at / on a standalone community site — same component, same styles. */
-.hero.hero-loc{min-height:auto;padding:150px 0 80px}
-.hero.hero-loc .hero-inner{grid-template-columns:1.1fr .9fr}
-/* The plate itself is set inline per community (Community.photos.hero); this
-   is the fallback and owns the framing. */
-.hero.hero-loc .hero-bg{background-image:url('/img/welcome.jpg');background-position:center 42%}
+.hero.hero-loc{padding:190px 0 40px}
+.hero.hero-loc .hero-inner{grid-template-columns:1.1fr .9fr;margin-bottom:0}
 .loc-eyebrow{
   display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--sage-deep);background:rgba(126,142,111,.16);
+  color:var(--sage-deep);background:rgba(126,142,111,.18);
   padding:6px 13px;border-radius:999px;margin-bottom:22px;
 }
 .loc-title{font-weight:350;letter-spacing:-0.026em;line-height:1.06;font-size:clamp(2.1rem,4.6vw,3.5rem);margin-bottom:22px}
-.loc-photo{border-radius:var(--radius);overflow:hidden;box-shadow:0 34px 70px -40px rgba(41,39,31,.35)}
-.loc-photo img{width:100%;height:min(52vh,440px);object-fit:cover}
+/* the community's lead photograph, held inside the heart */
+.loc-photo{width:min(36vw,420px);margin-inline:auto}
 .loc-facts{display:grid;grid-template-columns:repeat(3,1fr)}
 .loc-back{
   display:flex;width:fit-content;align-items:center;gap:8px;
@@ -500,19 +636,21 @@ footer{background:#221F18;color:rgba(247,243,236,.75);overflow:hidden}
 .loc-back:hover{color:var(--gold)}
 .loc-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
 .loc-tags span{
-  font-size:12px;color:var(--ink-soft);border:1px solid var(--line);
+  font-size:12px;color:var(--ink-soft);border:1px solid var(--line-sage);
   padding:6px 13px;border-radius:999px;
 }
 .loc-map{
   height:min(48vh,420px);border-radius:var(--radius);
-  border:1px solid rgba(41,39,31,.1);
-  box-shadow:0 34px 70px -40px rgba(41,39,31,.35);
+  border:1px solid var(--line-sage);
+  box-shadow:0 34px 70px -40px rgba(41,49,31,.4);
   margin-top:34px;background:var(--cream-2);
 }
-.loc-sisters{padding:0 0 120px}
+.loc-sisters{padding:0 0 150px;overflow:hidden}
+.loc-sisters .wrap{position:relative;z-index:1}
 .loc-sisters .h-section{margin-bottom:34px}
 @media (max-width:900px){
-  .hero.hero-loc .hero-inner{grid-template-columns:1fr}
+  .hero.hero-loc .hero-inner{grid-template-columns:1fr;gap:44px}
+  .loc-photo{width:min(70vw,340px);margin:0 auto}
   .loc-facts{grid-template-columns:1fr}
 }
 
@@ -523,13 +661,13 @@ footer{background:#221F18;color:rgba(247,243,236,.75);overflow:hidden}
    single-colour SVG rewritten to currentColor (see src/lib/brand.ts), so the
    colour is chosen here and the same file serves the light nav and the dark
    footer. */
-.brand .lockup{height:44px;width:auto;color:var(--sage-deep)}
+.brand .lockup{height:38px;width:auto;color:var(--sage-deep)}
 .foot-brand .lockup{height:40px;width:auto;color:var(--cream)}
 
 /* ---------- community page: about ---------- */
 .manifesto.loc-about{padding-bottom:30px}
 .about-where{
-  margin-top:26px;padding-top:20px;border-top:1px solid var(--line);
+  margin-top:26px;padding-top:20px;border-top:1px solid var(--line-sage);
   color:var(--ink-soft);font-size:15.5px;max-width:46ch;
 }
 .about-where span{
@@ -547,7 +685,8 @@ footer{background:#221F18;color:rgba(247,243,236,.75);overflow:hidden}
 .life-mark{width:20px;height:20px;flex:none;margin-top:5px;color:var(--gold-soft)}
 
 /* ---------- community page: the rest of the group ---------- */
-.network{padding:0 0 130px}
+.network{padding:0 0 150px;overflow:hidden}
+.network .wrap{position:relative;z-index:1}
 .network-head{
   display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end;margin-bottom:44px;
 }

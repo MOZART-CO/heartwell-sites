@@ -5,14 +5,13 @@
  * which differ, and are the reason each community has its own site.
  */
 import type { Community } from '../../config/types';
+import SectionHeart from '../SectionHeart.astro';
 
 interface Props {
   community?: Community;
 }
 
 const { community: c } = Astro.props;
-
-const heading = c ? `Care at ${c.shortName}.` : 'Care built around the person.';
 
 const intro = c
   ? `Every care line here runs on the same clinical depth and the same warmth. The goal never changes. Meet people where they are and move them toward home.`
@@ -51,7 +50,16 @@ const count = cards.length;
   <section class="care" id="care">
     <div class="wrap">
       <div class="care-head">
-        <h2 class="h-section reveal">{heading}</h2>
+        <div>
+          <SectionHeart tone="sage" class="reveal" />
+          <h2 class="h-section reveal">
+            {c ? (
+              <Fragment>Care at <span class="h-em">{c.shortName}</span>.</Fragment>
+            ) : (
+              <Fragment>Care built <span class="h-em">around the person</span>.</Fragment>
+            )}
+          </h2>
+        </div>
         <p class="lead reveal">{intro}</p>
       </div>
       <div class={`care-cards${count === 5 ? ' care-cards-5' : ''}`}>

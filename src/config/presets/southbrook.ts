@@ -18,7 +18,7 @@ export const preset: SiteConfig = {
 
   name: c.name,
   legalName: 'Heartwell Healthcare',
-  tagline: 'Warm. Capable. Present.',
+  tagline: 'Warm. Skilled. Present.',
   title: `${c.name} | ${c.tags.slice(0, 2).join(' and ')} in ${c.city}, ${c.region}`,
   description: c.blurb,
 

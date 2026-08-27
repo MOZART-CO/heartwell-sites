@@ -1,31 +1,39 @@
 ---
+import LayeredHeart from '../LayeredHeart.astro';
+import SectionHeart from '../SectionHeart.astro';
 ---
 
   <section class="standard">
-    <svg class="s-mark" viewBox="157.6 139.7 936.4 949.4" aria-hidden="true"><use href="#mark"/></svg>
     <div class="wrap">
-      <h2 class="h-section reveal">The Heartwell Standard.</h2>
-      <p class="s-sub reveal">Five values. Held every day, in every hallway.</p>
-      <div class="ledger">
-        <div class="ledger-row reveal">
-          <h3>Accountability</h3>
-          <p>Every outcome has a name attached to it. Ours first.</p>
-        </div>
-        <div class="ledger-row reveal">
-          <h3>Compassion</h3>
-          <p>Residents are known by name, story, and preference. Never by a room number.</p>
-        </div>
-        <div class="ledger-row reveal">
-          <h3>Integrity</h3>
-          <p>When something goes wrong, families hear it from us first. The truth, told plainly.</p>
-        </div>
-        <div class="ledger-row reveal">
-          <h3>Urgency</h3>
-          <p>Call lights, phone calls, and problems get answered today. Not tomorrow.</p>
-        </div>
-        <div class="ledger-row reveal">
-          <h3>Excellence</h3>
-          <p>Clean surveys and strong clinical outcomes are the floor, not the ceiling.</p>
+      <div class="forest-panel reveal">
+        <svg class="s-mark" viewBox="157.6 139.7 936.4 949.4" aria-hidden="true"><use href="#mark"/></svg>
+        <LayeredHeart tone="dark" />
+        <div class="fp-content">
+          <SectionHeart tone="cream" />
+          <h2 class="h-section">The Heartwell <span class="h-em">Standard</span>.</h2>
+          <p class="s-sub">Five values. Held every day, in every hallway.</p>
+          <div class="ledger">
+            <div class="ledger-row">
+              <h3>Accountability</h3>
+              <p>Every outcome has a name attached to it. Ours first.</p>
+            </div>
+            <div class="ledger-row">
+              <h3>Compassion</h3>
+              <p>Residents are known by name, story, and preference. Never by a room number.</p>
+            </div>
+            <div class="ledger-row">
+              <h3>Integrity</h3>
+              <p>When something goes wrong, families hear it from us first. The truth, told plainly.</p>
+            </div>
+            <div class="ledger-row">
+              <h3>Urgency</h3>
+              <p>Call lights, phone calls, and problems get answered today. Not tomorrow.</p>
+            </div>
+            <div class="ledger-row">
+              <h3>Excellence</h3>
+              <p>Clean surveys and strong clinical outcomes are the floor, not the ceiling.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

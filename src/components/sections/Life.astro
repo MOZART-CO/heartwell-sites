@@ -1,9 +1,11 @@
 ---
 /**
- * What a week actually looks like inside one building. The dark band the hub
- * uses for the Heartwell Standard, carrying this community's own calendar.
+ * What a week actually looks like inside one building. The forest panel the
+ * hub uses for the Heartwell Standard, carrying this community's own calendar.
  */
 import type { Community } from '../../config/types';
+import LayeredHeart from '../LayeredHeart.astro';
+import SectionHeart from '../SectionHeart.astro';
 
 interface Props {
   community: Community;
@@ -13,20 +15,26 @@ const { community: c } = Astro.props;
 ---
 
 <section class="standard life" id="life">
-  <svg class="s-mark" viewBox="157.6 139.7 936.4 949.4" aria-hidden="true"><use href="#mark"/></svg>
   <div class="wrap">
-    <h2 class="h-section reveal">Life at {c.shortName}.</h2>
-    <p class="s-sub reveal">
-      The parts of the week that do not appear on a care plan, and that residents
-      notice first.
-    </p>
-    <ul class="life-list">
-      {c.life.map((item) => (
-        <li class="life-item reveal">
-          <svg class="life-mark" viewBox="157.6 139.7 936.4 949.4" aria-hidden="true"><use href="#mark"/></svg>
-          <span>{item}</span>
-        </li>
-      ))}
-    </ul>
+    <div class="forest-panel reveal">
+      <svg class="s-mark" viewBox="157.6 139.7 936.4 949.4" aria-hidden="true"><use href="#mark"/></svg>
+      <LayeredHeart tone="dark" />
+      <div class="fp-content">
+        <SectionHeart tone="cream" />
+        <h2 class="h-section">Life at <span class="h-em">{c.shortName}</span>.</h2>
+        <p class="s-sub">
+          The parts of the week that do not appear on a care plan, and that residents
+          notice first.
+        </p>
+        <ul class="life-list">
+          {c.life.map((item) => (
+            <li class="life-item">
+              <svg class="life-mark" viewBox="157.6 139.7 936.4 949.4" aria-hidden="true"><use href="#mark"/></svg>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
   </div>
 </section>

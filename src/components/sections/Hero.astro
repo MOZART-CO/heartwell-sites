@@ -8,13 +8,13 @@ const countWord = WORDS[count] ?? String(count);
 const cities = [...new Set(communities.map((c) => c.city))];
 ---
 
-<section class="hero">
-  <div class="hero-bg" aria-hidden="true"></div>
+<section class="hero" id="top">
+  <svg class="hcontour hc-tr" viewBox="157.6 139.7 936.4 949.4" aria-hidden="true"><use href="#mark"/></svg>
   <div class="wrap hero-inner">
     <div>
       <h1 class="h-display">
         <span class="w reveal-hero" data-h="1">Warm<span class="dot">.</span></span>
-        <span class="w reveal-hero" data-h="2">Capable<span class="dot">.</span></span>
+        <span class="w reveal-hero" data-h="2">Skilled<span class="dot">.</span></span>
         <span class="w reveal-hero" data-h="3">Present<span class="dot">.</span></span>
       </h1>
       <p class="lead reveal-hero" data-h="4">An operator-led healthcare company. {countWord} {count === 1 ? 'community' : 'communities'} across {cities.length === 1 ? cities[0] + ', ' : ''}Ohio, run by people who have spent their careers on the floor.</p>
@@ -25,8 +25,9 @@ const cities = [...new Set(communities.map((c) => c.city))];
     </div>
     <HeroMark />
   </div>
-  <div class="hero-scroll" aria-hidden="true">
-    <span>Scroll</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  <div class="wrap">
+    <figure class="hero-plate reveal-hero" data-h="5">
+      <img src="/img/hero.jpg" alt="The reception of a Heartwell community, warm wood and soft light, the Heartwell heart on the wall" loading="eager" fetchpriority="high">
+    </figure>
   </div>
 </section>

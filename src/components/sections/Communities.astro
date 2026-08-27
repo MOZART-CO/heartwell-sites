@@ -1,5 +1,6 @@
 ---
 import { communities, communityHref, site } from '../../config/site';
+import SectionHeart from '../SectionHeart.astro';
 
 const count = communities.length;
 const WORDS: Record<number, string> = { 1: 'One', 2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five' };
@@ -22,8 +23,10 @@ const mapData = communities.map((c) => ({
 ---
 
 <section class="communities" id="communities">
+  <svg class="hcontour hc-tr" viewBox="157.6 139.7 936.4 949.4" aria-hidden="true"><use href="#mark"/></svg>
   <div class="wrap">
-    <h2 class="h-section reveal">{countWord} {count === 1 ? 'community' : 'communities'}. One standard.</h2>
+    <SectionHeart tone="sage" class="reveal" />
+    <h2 class="h-section reveal">{countWord} {count === 1 ? 'community' : 'communities'}. <span class="h-em">One standard.</span></h2>
     <p class="lead reveal">{cityList} {site.name.split(' ')[0]} community runs on the same promise. Warm care, sharp clinical work, and leadership you can find in the hallway.</p>
     <div id="map" role="region" aria-label={`Map of ${site.name} communities in Ohio`} data-communities={JSON.stringify(mapData)}></div>
     <div class="comm-grid" id="commGrid">

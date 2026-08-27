@@ -14,10 +14,14 @@
  * The per-community artwork is prepared in `src/lib/brand.ts`.
  */
 import { lockup, wordmark } from '../lib/brand';
+import { HEART_CLIP_TRANSFORM, HEART_PATH } from '../lib/heart';
 ---
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
+    <clipPath id="heart-clip" clipPathUnits="objectBoundingBox">
+      <path d={HEART_PATH} transform={HEART_CLIP_TRANSFORM} />
+    </clipPath>
     <symbol id="mark" viewBox="157.6 139.7 936.4 949.4"><g transform="translate(0.000000,1254.000000) scale(0.100000,-0.100000)"
 fill="currentColor" stroke="none">
 <path d="M3962 10949 c-304 -25 -646 -146 -922 -327 -653 -426 -1135 -1301
