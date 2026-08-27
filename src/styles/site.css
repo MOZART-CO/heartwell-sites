@@ -42,12 +42,13 @@
   --ripple-5:#6F805A;
   --line:rgba(41,39,31,.14);
   --line-sage:rgba(73,84,62,.18);
-  --radius:26px;
+  --radius:28px;
+  --radius-lg:38px;
   --ease:cubic-bezier(.22,1,.36,1);
   --font:'Hanken Grotesk Variable','Hanken Grotesk',-apple-system,system-ui,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:84px;overflow-x:clip}
+html{scroll-behavior:smooth;scroll-padding-top:110px;overflow-x:clip}
 body{
   background:var(--cream);
   color:var(--ink);
@@ -70,13 +71,14 @@ a{color:inherit;text-decoration:none}
 /* ---------- shared ---------- */
 .wrap{width:min(1180px,92vw);margin-inline:auto}
 .h-display{
-  font-weight:350;letter-spacing:-0.028em;line-height:1.04;
-  font-size:clamp(2.5rem,6.4vw,4.6rem);
+  font-weight:330;letter-spacing:-0.032em;line-height:1.02;
+  font-size:clamp(2.8rem,7vw,5.2rem);
 }
 .h-section{
-  font-weight:400;letter-spacing:-0.024em;line-height:1.12;
-  font-size:clamp(1.9rem,4vw,3rem);
+  font-weight:380;letter-spacing:-0.026em;line-height:1.1;
+  font-size:clamp(2rem,4.3vw,3.3rem);
   max-width:20ch;
+  text-wrap:balance;
 }
 /* The boards' two-tone headline: part of the line carried a step heavier. */
 .h-em{font-weight:560}
@@ -182,29 +184,32 @@ html.js .reveal-hero[data-h="4"]{transition-delay:.3s}
 html.js .reveal-hero[data-h="5"]{transition-delay:.42s}
 html.no-anim .reveal,html.no-anim .reveal-hero{opacity:1;transform:none;transition:none}
 
-/* ---------- nav ---------- */
-.nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  transition:background .4s,border-color .4s,backdrop-filter .4s;
-  border-bottom:1px solid transparent;
-}
-.nav.scrolled{
-  background:rgba(247,243,236,.8);
-  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
-  border-bottom-color:var(--line-sage);
-}
+/* ---------- nav ----------
+   A floating glass bar — the contact panel's material, made chrome. */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 0}
 .nav-inner{
-  width:min(1280px,94vw);margin-inline:auto;
+  width:min(1240px,94vw);margin-inline:auto;
   display:flex;align-items:center;justify-content:space-between;
-  padding:18px 0;
+  padding:10px 12px 10px 26px;
+  background:rgba(252,250,245,.78);
+  -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
+  border:1px solid rgba(73,84,62,.16);
+  border-radius:999px;
+  box-shadow:0 18px 40px -30px rgba(41,49,31,.35);
+  transition:box-shadow .4s,background .4s;
+}
+.nav.scrolled .nav-inner{
+  background:rgba(252,250,245,.88);
+  box-shadow:0 22px 48px -28px rgba(41,49,31,.45);
 }
 .brand{display:flex;align-items:center;gap:12px;color:var(--ink)}
-.brand .mark{width:34px;height:34px;color:var(--gold)}
+.brand .mark{width:30px;height:30px;color:var(--gold)}
 .brand .word{height:17px;width:auto;color:var(--ink)}
 .nav-links{display:flex;align-items:center;gap:34px}
 .nav-links a{font-size:14.5px;font-weight:500;color:var(--ink-soft);transition:color .25s}
 .nav-links a:hover{color:var(--sage-deep)}
-.nav-links .btn{padding:11px 22px;font-size:14px}
+.nav-links a.btn{padding:11px 22px;font-size:14px;color:var(--cream)}
+.nav-links a.btn:hover{color:var(--cream)}
 .burger{display:none;background:none;border:0;cursor:pointer;padding:8px;color:var(--ink)}
 .burger svg{display:block}
 
@@ -222,42 +227,35 @@ html.no-anim .reveal,html.no-anim .reveal-hero{opacity:1;transform:none;transiti
 .mnav a:last-of-type{border-bottom:0}
 .mnav .mnav-foot{margin-top:28px;color:var(--ink-soft);font-size:14px}
 
-/* ---------- hero ---------- */
+/* ---------- hero ----------
+   A clean, quiet canvas: the type owns the space, the layered heart floats
+   beside it, and the photography sits below in a cinematic rounded plate —
+   never behind the words. */
 .hero{
-  min-height:100svh;
-  display:flex;align-items:center;
-  padding:140px 0 90px;
+  padding:190px 0 30px;
   position:relative;overflow:hidden;
 }
-.hero-bg{
-  position:absolute;inset:0;z-index:0;
-  background:url('/img/hero.jpg') center 30%/cover no-repeat;
+.hero::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(1100px 560px at 82% 4%, rgba(126,142,111,.13), rgba(126,142,111,0) 68%);
 }
-/* the wash over the photograph leans sage now, and lands on the sage-mist
-   band that follows, so the hero and the fact strip read as one surface */
-.hero-bg::after{
-  content:"";position:absolute;inset:0;
-  background:
-    linear-gradient(to bottom, rgba(233,236,223,.30), rgba(233,236,223,.44) 62%, var(--sage-mist) 97%),
-    linear-gradient(100deg, rgba(239,241,230,.95) 0%, rgba(237,240,227,.72) 38%, rgba(233,236,223,.20) 72%, rgba(233,236,223,.05) 100%);
-}
-.hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:4vw}
-.hero h1{margin:0 0 26px}
+.hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1.2fr .8fr;align-items:center;gap:5vw;margin-bottom:72px}
+.hero h1{margin:0 0 28px}
 .h-display .dot{color:var(--gold)}
 .hero h1 .w{display:inline-block}
-.hero .lead{margin-bottom:38px;color:var(--ink)}
+.hero .lead{margin-bottom:40px}
 .hero-ctas{display:flex;gap:14px;flex-wrap:wrap}
 .hero-mark{
-  width:min(30vw,430px);margin-inline:auto;
+  width:min(23vw,330px);margin-inline:auto;
   position:relative;
 }
-.hero-scroll{
-  position:absolute;bottom:34px;left:50%;transform:translateX(-50%);z-index:2;
-  color:var(--ink-soft);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;
-  display:flex;flex-direction:column;align-items:center;gap:8px;
+.hero-plate{
+  position:relative;z-index:2;
+  border-radius:var(--radius-lg);overflow:hidden;
+  border:1px solid var(--line-sage);
+  box-shadow:0 50px 90px -55px rgba(41,49,31,.5);
 }
-.hero-scroll svg{animation:dip 2.2s ease-in-out infinite}
-@keyframes dip{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+.hero-plate img{width:100%;height:min(64vh,600px);object-fit:cover;object-position:center 34%}
 
 @keyframes layerIn{
   from{opacity:0}
@@ -275,16 +273,22 @@ html.no-anim .reveal,html.no-anim .reveal-hero{opacity:1;transform:none;transiti
 .hero-mark.animate .lh-5{animation-delay:.56s}
 .hero-mark.breathing .lheart{animation:breathe 7s ease-in-out infinite}
 
-/* ---------- fact strip ---------- */
-.strip{background:var(--sage-mist)}
+/* ---------- fact strip (a soft sage card) ---------- */
+.strip{padding:0 0 150px}
+.strip-panel{
+  background:var(--sage-mist);
+  border:1px solid rgba(73,84,62,.12);
+  border-radius:var(--radius-lg);
+  padding:16px clamp(28px,4vw,48px);
+}
 .strip-grid{display:grid;grid-template-columns:repeat(3,1fr)}
-.strip-cell{padding:36px 34px 36px 0}
+.strip-cell{padding:30px 34px 30px 0}
 .strip-cell + .strip-cell{border-left:1px solid var(--line-sage);padding-left:34px}
-.strip-cell b{display:block;font-size:1.25rem;font-weight:600;letter-spacing:-0.01em;margin-bottom:4px;color:var(--sage-deep)}
+.strip-cell b{display:block;font-size:1.2rem;font-weight:600;letter-spacing:-0.01em;margin-bottom:4px;color:var(--sage-deep)}
 .strip-cell span{color:var(--ink-soft);font-size:15px}
 
 /* ---------- manifesto ---------- */
-.manifesto{padding:130px 0 100px;overflow:hidden}
+.manifesto{padding:0 0 150px;overflow:hidden}
 .manifesto-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center;margin-bottom:80px}
 .manifesto .h-section{max-width:24ch;margin-bottom:30px}
 .manifesto-photo{border-radius:var(--radius);overflow:hidden;box-shadow:0 34px 70px -40px rgba(41,49,31,.4)}
@@ -297,11 +301,12 @@ html.no-anim .reveal,html.no-anim .reveal-hero{opacity:1;transform:none;transiti
 /* ---------- testimonial band ----------
    The family-feedback board: a soft sage panel, the quote set large, and the
    photograph held inside the heart. */
-.tband{padding:20px 0 120px}
+.tband{padding:0 0 150px}
 .tband-panel{
   position:relative;overflow:hidden;
   background:linear-gradient(150deg,#D3DAC5,#C3CDB2);
-  border-radius:calc(var(--radius) + 6px);
+  border:1px solid rgba(73,84,62,.12);
+  border-radius:var(--radius-lg);
   padding:clamp(44px,6vw,88px);
   display:grid;grid-template-columns:1.05fr .95fr;
   gap:clamp(36px,5vw,72px);align-items:center;
@@ -315,21 +320,26 @@ html.no-anim .reveal,html.no-anim .reveal-hero{opacity:1;transform:none;transiti
 .tband-photo{position:relative;z-index:1;width:min(36vw,400px);margin-inline:auto}
 .tband .hcontour{color:var(--sage-deep);opacity:.07}
 
-/* ---------- standard / life (the deep-green band) ---------- */
-.standard{
+/* ---------- standard / life (the deep-green panel) ---------- */
+.standard{padding:0 0 150px}
+.forest-panel{
+  position:relative;overflow:hidden;
   background:linear-gradient(168deg,#4C5741 0%,#3B462F 55%,#2F3924 100%);
-  color:var(--cream);padding:130px 0;overflow:hidden;
+  color:var(--cream);
+  border-radius:var(--radius-lg);
+  padding:clamp(48px,6vw,92px);
+  box-shadow:0 50px 90px -55px rgba(30,37,22,.6);
 }
-.standard .s-mark{
+.forest-panel .s-mark{
   position:absolute;top:-90px;right:-110px;width:460px;color:var(--cream);
   opacity:.07;pointer-events:none;
 }
-.standard .lheart-dark{
+.forest-panel .lheart-dark{
   position:absolute;bottom:-140px;left:-120px;width:480px;pointer-events:none;
 }
+.fp-content{position:relative;z-index:1}
 .standard .h-section{margin-bottom:14px;max-width:24ch}
-.standard .s-sub{color:rgba(247,243,236,.66);margin-bottom:64px;font-size:1.05rem;max-width:52ch}
-.standard .wrap{position:relative;z-index:1}
+.standard .s-sub{color:rgba(247,243,236,.66);margin-bottom:56px;font-size:1.05rem;max-width:52ch}
 .ledger{border-top:1px solid rgba(247,243,236,.22);position:relative}
 .ledger-row{
   display:grid;grid-template-columns:300px 1fr;gap:30px;
@@ -343,7 +353,7 @@ html.no-anim .reveal,html.no-anim .reveal-hero{opacity:1;transform:none;transiti
 .ledger-row:hover h3{color:var(--gold-faint)}
 
 /* ---------- care ---------- */
-.care{padding:130px 0}
+.care{padding:0 0 150px}
 .care-head{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;margin-bottom:56px}
 .care-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .care-card{
@@ -360,8 +370,8 @@ html.no-anim .reveal,html.no-anim .reveal-hero{opacity:1;transform:none;transiti
 .care-card h3{font-size:1.12rem;font-weight:600;margin-bottom:10px;letter-spacing:-0.01em;color:var(--sage-deep)}
 .care-card p{color:var(--ink-soft);font-size:15px}
 
-/* ---------- communities (a soft sage band) ---------- */
-.communities{padding:110px 0;background:var(--sage-mist);overflow:hidden}
+/* ---------- communities ---------- */
+.communities{padding:0 0 150px;overflow:hidden}
 .communities .wrap{position:relative;z-index:1}
 .communities .h-section{margin-bottom:22px}
 .communities .lead{margin-bottom:52px}
@@ -423,7 +433,7 @@ html.no-anim .reveal,html.no-anim .reveal-hero{opacity:1;transform:none;transiti
 }
 
 /* ---------- promises ---------- */
-.promises{padding:120px 0}
+.promises{padding:0 0 150px}
 .prom-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .prom{
   border-radius:var(--radius);padding:56px 48px;color:var(--cream);
@@ -450,9 +460,9 @@ html.no-anim .reveal,html.no-anim .reveal-hero{opacity:1;transform:none;transiti
 .prom .lheart-dark{position:absolute;top:-60px;right:-60px;width:300px;pointer-events:none}
 
 /* ---------- careers ---------- */
-.careers{padding:0 0 130px}
+.careers{padding:0 0 150px}
 .careers-inner{
-  position:relative;border-radius:var(--radius);overflow:hidden;
+  position:relative;border-radius:var(--radius-lg);overflow:hidden;
   padding:clamp(52px,7vw,96px);
   min-height:480px;display:flex;align-items:flex-end;
   color:var(--cream);
@@ -484,7 +494,7 @@ html.no-anim .reveal,html.no-anim .reveal-hero{opacity:1;transform:none;transiti
   background:rgba(252,250,245,.9);
   -webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
   border:1px solid rgba(255,255,255,.6);
-  border-radius:calc(var(--radius) + 4px);
+  border-radius:var(--radius-lg);
   box-shadow:0 44px 90px -40px rgba(19,24,13,.6);
   display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(36px,4vw,64px);
   padding:clamp(34px,4.5vw,58px);
@@ -563,19 +573,24 @@ footer{background:var(--forest-deep);color:rgba(247,243,236,.75);overflow:hidden
   .tband-quote blockquote{max-width:none}
 }
 @media (max-width:900px){
-  .hero-scroll{display:none}
-  .standard .s-mark{width:300px;top:-60px;right:-90px}
-  .standard .lheart-dark{width:320px;bottom:-100px;left:-90px}
+  .forest-panel .s-mark{width:300px;top:-60px;right:-90px}
+  .forest-panel .lheart-dark{width:320px;bottom:-100px;left:-90px}
+  .forest-panel{padding:44px 26px}
   .careers-inner{min-height:520px;padding:44px 28px}
   .careers-bg{background-position:center 35%}
   .contact{padding:90px 0}
+  .nav{padding:10px 0}
+  .nav-inner{padding:8px 8px 8px 18px}
   .nav-links{display:none}
   .burger{display:block}
-  .hero-inner{grid-template-columns:1fr;gap:0}
-  .hero-mark{order:-1;width:120px;margin:0 0 30px}
-  .hero{padding-top:130px}
+  .hero-inner{grid-template-columns:1fr;gap:0;margin-bottom:52px}
+  .hero-mark{order:-1;width:110px;margin:0 0 30px}
+  .hero{padding-top:140px}
+  .hero-plate img{height:48vh}
+  .strip{padding-bottom:110px}
+  .strip-panel{padding:8px 24px}
   .strip-grid{grid-template-columns:1fr}
-  .strip-cell{padding:22px 0}
+  .strip-cell{padding:20px 0}
   .strip-cell + .strip-cell{border-left:0;border-top:1px solid var(--line-sage);padding-left:0}
   .care-head{grid-template-columns:1fr;gap:18px}
   .prom-grid{grid-template-columns:1fr}
@@ -584,6 +599,7 @@ footer{background:var(--forest-deep);color:rgba(247,243,236,.75);overflow:hidden
   .foot-grid{grid-template-columns:1fr;gap:34px}
   .hcontour.hc-tr{width:320px;top:-80px;right:-100px}
   .hcontour.hc-bl{width:380px;bottom:-110px;left:-120px}
+  .manifesto,.tband,.standard,.care,.communities,.promises,.careers,.network,.loc-sisters{padding-bottom:110px}
 }
 @media (max-width:620px){
   .care-cards{grid-template-columns:1fr}
@@ -602,11 +618,8 @@ footer{background:var(--forest-deep);color:rgba(247,243,236,.75);overflow:hidden
 /* ---------- community page ----------
    One community's own page. Lives at /locations/<id> on the corporate hub and
    at / on a standalone community site — same component, same styles. */
-.hero.hero-loc{min-height:auto;padding:150px 0 90px}
-.hero.hero-loc .hero-inner{grid-template-columns:1.1fr .9fr}
-/* The plate itself is set inline per community (Community.photos.hero); this
-   is the fallback and owns the framing. */
-.hero.hero-loc .hero-bg{background-image:url('/img/welcome.jpg');background-position:center 42%}
+.hero.hero-loc{padding:190px 0 40px}
+.hero.hero-loc .hero-inner{grid-template-columns:1.1fr .9fr;margin-bottom:0}
 .loc-eyebrow{
   display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
   color:var(--sage-deep);background:rgba(126,142,111,.18);
@@ -632,7 +645,7 @@ footer{background:var(--forest-deep);color:rgba(247,243,236,.75);overflow:hidden
   box-shadow:0 34px 70px -40px rgba(41,49,31,.4);
   margin-top:34px;background:var(--cream-2);
 }
-.loc-sisters{padding:110px 0;background:var(--sage-mist);overflow:hidden}
+.loc-sisters{padding:0 0 150px;overflow:hidden}
 .loc-sisters .wrap{position:relative;z-index:1}
 .loc-sisters .h-section{margin-bottom:34px}
 @media (max-width:900px){
@@ -648,7 +661,7 @@ footer{background:var(--forest-deep);color:rgba(247,243,236,.75);overflow:hidden
    single-colour SVG rewritten to currentColor (see src/lib/brand.ts), so the
    colour is chosen here and the same file serves the light nav and the dark
    footer. */
-.brand .lockup{height:44px;width:auto;color:var(--sage-deep)}
+.brand .lockup{height:38px;width:auto;color:var(--sage-deep)}
 .foot-brand .lockup{height:40px;width:auto;color:var(--cream)}
 
 /* ---------- community page: about ---------- */
@@ -672,7 +685,7 @@ footer{background:var(--forest-deep);color:rgba(247,243,236,.75);overflow:hidden
 .life-mark{width:20px;height:20px;flex:none;margin-top:5px;color:var(--gold-soft)}
 
 /* ---------- community page: the rest of the group ---------- */
-.network{padding:110px 0;background:var(--sage-mist);overflow:hidden}
+.network{padding:0 0 150px;overflow:hidden}
 .network .wrap{position:relative;z-index:1}
 .network-head{
   display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end;margin-bottom:44px;

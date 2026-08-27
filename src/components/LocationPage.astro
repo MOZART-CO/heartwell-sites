@@ -27,7 +27,7 @@ const directions = `https://www.google.com/maps/dir/?api=1&destination=${encodeU
 ---
 
 <section class="hero hero-loc">
-  <div class="hero-bg" aria-hidden="true" style={`background-image:url('${c.photos.hero}')`}></div>
+  <svg class="hcontour hc-tr" viewBox="157.6 139.7 936.4 949.4" aria-hidden="true"><use href="#mark"/></svg>
   <div class="wrap hero-inner">
     <div>
       {!standalone && <a class="loc-back" href="/#communities">
@@ -56,24 +56,26 @@ const directions = `https://www.google.com/maps/dir/?api=1&destination=${encodeU
 </section>
 
 <section class="strip">
-  <div class={`wrap strip-grid loc-facts${c.fax ? ' loc-facts-4' : ''}`}>
-    <div class="strip-cell">
-      <b>Address</b>
-      <span>{c.address}</span>
-    </div>
-    <div class="strip-cell">
-      <b>Phone</b>
-      <span><a href={`tel:${tel}`}>{c.phone}</a></span>
-    </div>
-    {c.fax && (
+  <div class="wrap">
+    <div class={`strip-panel strip-grid loc-facts${c.fax ? ' loc-facts-4' : ''}`}>
       <div class="strip-cell">
-        <b>Fax</b>
-        <span>{c.fax}</span>
+        <b>Address</b>
+        <span>{c.address}</span>
       </div>
-    )}
-    <div class="strip-cell">
-      <b>Directions</b>
-      <span><a href={directions} target="_blank" rel="noopener">Open in Google Maps</a></span>
+      <div class="strip-cell">
+        <b>Phone</b>
+        <span><a href={`tel:${tel}`}>{c.phone}</a></span>
+      </div>
+      {c.fax && (
+        <div class="strip-cell">
+          <b>Fax</b>
+          <span>{c.fax}</span>
+        </div>
+      )}
+      <div class="strip-cell">
+        <b>Directions</b>
+        <span><a href={directions} target="_blank" rel="noopener">Open in Google Maps</a></span>
+      </div>
     </div>
   </div>
 </section>
