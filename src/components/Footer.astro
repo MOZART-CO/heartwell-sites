@@ -1,6 +1,7 @@
 ---
 import { community, hubUrl, isCommunitySite, site } from '../config/site';
 import { lockup, wordmarkViewBox } from '../lib/brand';
+import MozartMark from './MozartMark.astro';
 import type { NavLink } from './Nav.astro';
 
 interface Props {
@@ -77,7 +78,7 @@ const tel = community ? community.phone.replace(/[^0-9]/g, '') : '';
       ) : (
         <span>Skilled nursing, rehabilitation, and long-term care across Ohio.</span>
       )}
-      <img class="mozart" src="/img/mozart.svg" alt="Mozart & Co" width="451" height="123" loading="lazy">
+      <MozartMark />
     </div>
   </div>
 </footer>

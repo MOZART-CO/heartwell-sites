@@ -542,7 +542,7 @@ footer{background:var(--forest-deep);color:rgba(247,243,236,.75);overflow:hidden
   display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;
   padding:26px 0 34px;font-size:13px;color:rgba(247,243,236,.45);
 }
-.legal .mozart{height:12px;width:auto;opacity:.5}
+.legal .mozart{height:17px;width:auto;display:block;color:rgba(247,243,236,.6)}
 
 /* ---------- responsive ---------- */
 @media (max-width:1000px){
