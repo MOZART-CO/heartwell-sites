@@ -72,12 +72,12 @@ function sigHtml(s: SigData): string {
   const phoneRow = s.phone
     ? `<a href="tel:${tel}" style="color:#29271F;text-decoration:none;">${s.phone}</a><span style="color:#B9BCA8;">&nbsp;&nbsp;·&nbsp;&nbsp;</span>`
     : '';
-  return `<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="font-family:${FONT};max-width:560px;">
+  return `<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="font-family:${FONT};">
   <tr>
-    <td style="vertical-align:middle;padding:2px 24px 2px 0;">
-      <a href="${s.url}" target="_blank" style="text-decoration:none;"><img src="${SIG_HOST}/img/sig/${s.id}.png" width="${logo.w}" height="${logo.h}" alt="${s.org}" style="display:block;border:0;width:${logo.w}px;height:${logo.h}px;"></a>
+    <td width="${logo.w + 24}" style="width:${logo.w + 24}px;vertical-align:middle;padding:2px 24px 2px 0;">
+      <a href="${s.url}" target="_blank" style="text-decoration:none;"><img src="${SIG_HOST}/img/sig/${s.id}.png" width="${logo.w}" height="${logo.h}" alt="${s.org}" style="display:block;border:0;width:${logo.w}px;height:${logo.h}px;max-width:none;"></a>
     </td>
-    <td style="vertical-align:middle;border-left:1px solid #D8DCCB;padding:2px 0 2px 24px;">
+    <td style="vertical-align:middle;border-left:1px solid #D8DCCB;padding:2px 0 2px 24px;max-width:340px;">
       <div style="font-size:16px;line-height:1.3;font-weight:700;color:#29271F;"><span data-f="name">First Last</span></div>
       <div style="font-size:13px;line-height:1.5;color:#49543E;padding-bottom:10px;"><span data-f="title">Job Title</span> · ${s.orgLine}</div>
       <div style="font-size:12.5px;line-height:1.8;color:#5C574B;">
@@ -108,11 +108,8 @@ const nav = [{ href: '/', label: 'Heartwell home' }];
       <SectionHeart tone="gold" />
       <h1 class="h-section">Email <span class="h-em">signatures</span>.</h1>
       <p class="lead">
-        One signature for corporate and one for each community, in the Heartwell
-        brand. Type the person&rsquo;s name and title, press
-        <strong>Copy signature</strong>, and paste it into the email app&rsquo;s
-        signature box. Every phone number, email, website, and address is a
-        working link.
+        Type the name and title, press <strong>Copy signature</strong>, paste
+        into your email app.
       </p>
 
       <div class="sig-how">
@@ -144,11 +141,6 @@ const nav = [{ href: '/', label: 'Heartwell home' }];
         ))}
       </div>
 
-      <p class="sig-fine">
-        Recipients without the Hanken Grotesk font see Helvetica or Arial — the
-        layout holds either way. LinkedIn and social icons are left out until
-        the profiles exist; they can be added to any signature in one line.
-      </p>
     </div>
   </section>
 </Layout>
@@ -196,9 +188,9 @@ const nav = [{ href: '/', label: 'Heartwell home' }];
             document.execCommand('copy');
             sel.removeAllRanges();
           }
-          say('Signature copied — paste it into the signature box.');
+          say('Copied.');
         } catch {
-          say('Copy is blocked in this browser — use Copy HTML instead.');
+          say('Copy blocked — use Copy HTML.');
         }
       });
     });
