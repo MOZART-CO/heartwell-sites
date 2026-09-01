@@ -31,8 +31,6 @@ interface SigData {
   orgLine: string;
   phone?: string;
   address: string;
-  url: string;
-  host: string;
 }
 
 const entries: SigData[] = [
@@ -43,8 +41,6 @@ const entries: SigData[] = [
     org: site.name,
     orgLine: 'Heartwell Healthcare',
     address: site.headquarters,
-    url: site.url,
-    host: site.url.replace('https://', ''),
   },
   ...communities.map((c) => ({
     id: c.id,
@@ -54,8 +50,6 @@ const entries: SigData[] = [
     orgLine: `${c.name} · A Heartwell Healthcare Community`,
     phone: c.phone,
     address: c.address,
-    url: c.siteUrl ?? site.url,
-    host: (c.siteUrl ?? site.url).replace('https://', ''),
   })),
 ];
 
@@ -75,15 +69,15 @@ function sigHtml(s: SigData): string {
   return `<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="font-family:${FONT};">
   <tr>
     <td width="${logo.w + 24}" style="width:${logo.w + 24}px;vertical-align:middle;padding:2px 24px 2px 0;">
-      <a href="${s.url}" target="_blank" style="text-decoration:none;"><img src="${SIG_HOST}/img/sig/${s.id}.png" width="${logo.w}" height="${logo.h}" alt="${s.org}" style="display:block;border:0;width:${logo.w}px;height:${logo.h}px;max-width:none;"></a>
+      <img src="${SIG_HOST}/img/sig/${s.id}.png" width="${logo.w}" height="${logo.h}" alt="${s.org}" style="display:block;border:0;width:${logo.w}px;height:${logo.h}px;max-width:none;">
     </td>
     <td style="vertical-align:middle;border-left:1px solid #D8DCCB;padding:2px 0 2px 24px;max-width:340px;">
       <div style="font-size:16px;line-height:1.3;font-weight:700;color:#29271F;"><span data-f="name">First Last</span></div>
       <div style="font-size:13px;line-height:1.5;color:#49543E;padding-bottom:10px;"><span data-f="title">Job Title</span> · ${s.orgLine}</div>
       <div style="font-size:12.5px;line-height:1.8;color:#5C574B;">
-        ${phoneRow}<a href="mailto:${site.email}" style="color:#29271F;text-decoration:none;">${site.email}</a><br>
-        <a href="${s.url}" target="_blank" style="color:#B08D4F;font-weight:600;text-decoration:none;">${s.host}</a><br>
-        <a href="${maps}" target="_blank" style="color:#5C574B;text-decoration:none;">${s.address}</a>
+        <div>${phoneRow}<a href="mailto:${site.email}" style="color:#29271F;text-decoration:none;">${site.email}</a></div>
+        <div data-f-row="site" style="display:none;"><a data-f="site" href="" target="_blank" style="color:#B08D4F;font-weight:600;text-decoration:none;"></a></div>
+        <div><a href="${maps}" target="_blank" style="color:#5C574B;text-decoration:none;">${s.address}</a></div>
       </div>
       <div style="font-size:10.5px;line-height:1;letter-spacing:2px;color:#B08D4F;padding-top:10px;">WARM&nbsp;&nbsp;·&nbsp;&nbsp;SKILLED&nbsp;&nbsp;·&nbsp;&nbsp;PRESENT</div>
     </td>
@@ -131,6 +125,7 @@ const nav = [{ href: '/', label: 'Heartwell home' }];
             <div class="sig-fields">
               <label>Name <input type="text" data-edit="name" value="First Last"></label>
               <label>Title <input type="text" data-edit="title" value="Job Title"></label>
+              <label>Website <input type="text" data-edit="site" value="" placeholder="Add when the domain is live"></label>
             </div>
             <div class="sig-actions">
               <button class="btn" data-copy="rich">Copy signature</button>
@@ -151,9 +146,25 @@ const nav = [{ href: '/', label: 'Heartwell home' }];
     const note = card.querySelector<HTMLElement>('.sig-note')!;
 
     card.querySelectorAll<HTMLInputElement>('input[data-edit]').forEach((input) => {
-      const span = render.querySelector<HTMLElement>(`[data-f="${input.dataset.edit}"]`)!;
+      const field = input.dataset.edit!;
+      if (field === 'site') {
+        const row = render.querySelector<HTMLElement>('[data-f-row="site"]')!;
+        const link = render.querySelector<HTMLAnchorElement>('[data-f="site"]')!;
+        input.addEventListener('input', () => {
+          const host = input.value.trim().replace(/^https?:\/\//, '').replace(/\/$/, '');
+          if (host) {
+            link.href = `https://${host}`;
+            link.textContent = host;
+            row.style.display = '';
+          } else {
+            row.style.display = 'none';
+          }
+        });
+        return;
+      }
+      const span = render.querySelector<HTMLElement>(`[data-f="${field}"]`)!;
       input.addEventListener('input', () => {
-        span.textContent = input.value || (input.dataset.edit === 'name' ? 'First Last' : 'Job Title');
+        span.textContent = input.value || (field === 'name' ? 'First Last' : 'Job Title');
       });
     });
 
@@ -164,7 +175,13 @@ const nav = [{ href: '/', label: 'Heartwell home' }];
 
     card.querySelectorAll<HTMLButtonElement>('button[data-copy]').forEach((btn) => {
       btn.addEventListener('click', async () => {
-        const html = render.firstElementChild!.outerHTML.replace(/ data-f="[^"]*"/g, '');
+        const node = render.firstElementChild!.cloneNode(true) as HTMLElement;
+        node.querySelectorAll<HTMLElement>('[data-f-row]').forEach((el) => {
+          if (el.style.display === 'none') el.remove();
+          else el.removeAttribute('data-f-row');
+        });
+        node.querySelectorAll('[data-f]').forEach((el) => el.removeAttribute('data-f'));
+        const html = node.outerHTML;
         try {
           if (btn.dataset.copy === 'html') {
             await navigator.clipboard.writeText(html);
