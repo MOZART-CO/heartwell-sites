@@ -1,0 +1,206 @@
+---
+/**
+ * Internal tools, built on the hub only — community buckets stay clean.
+ * One route today: /email-signatures, the signature board for every
+ * facility. Unlinked from the site chrome; shared by URL.
+ */
+import Layout from '../layouts/Layout.astro';
+import SectionHeart from '../components/SectionHeart.astro';
+import { communities, site } from '../config/site';
+
+export function getStaticPaths() {
+  return site.kind === 'hub' ? [{ params: { internal: 'email-signatures' } }] : [];
+}
+
+/** Hosted 2x rasters of each brand lockup (see public/heartwell/img/sig/). */
+const SIG_HOST = site.url;
+const LOGOS: Record<string, { w: number; h: number }> = {
+  heartwell: { w: 162, h: 48 },
+  'allen-view': { w: 179, h: 48 },
+  southbrook: { w: 199, h: 48 },
+  columbus: { w: 178, h: 48 },
+  riverside: { w: 164, h: 48 },
+  'wood-glen': { w: 190, h: 48 },
+};
+
+interface SigData {
+  id: string;
+  label: string;
+  city: string;
+  org: string;
+  orgLine: string;
+  phone?: string;
+  address: string;
+  url: string;
+  host: string;
+}
+
+const entries: SigData[] = [
+  {
+    id: 'heartwell',
+    label: 'Heartwell Healthcare (corporate)',
+    city: 'All communities',
+    org: site.name,
+    orgLine: 'Heartwell Healthcare',
+    address: site.headquarters,
+    url: site.url,
+    host: site.url.replace('https://', ''),
+  },
+  ...communities.map((c) => ({
+    id: c.id,
+    label: c.name,
+    city: `${c.city}, ${c.region}`,
+    org: c.name,
+    orgLine: `${c.name} · A Heartwell Healthcare Community`,
+    phone: c.phone,
+    address: c.address,
+    url: c.siteUrl ?? site.url,
+    host: (c.siteUrl ?? site.url).replace('https://', ''),
+  })),
+];
+
+/**
+ * The signature itself: table-based, every style inline, web-safe font
+ * fallbacks — the shape Gmail, Outlook, Apple Mail and mobile clients all
+ * render faithfully. Name and title are placeholders the board edits live.
+ */
+const FONT = "'Hanken Grotesk','Helvetica Neue',Helvetica,Arial,sans-serif";
+function sigHtml(s: SigData): string {
+  const logo = LOGOS[s.id];
+  const maps = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(s.address)}`;
+  const tel = s.phone ? s.phone.replace(/[^0-9]/g, '') : '';
+  const phoneRow = s.phone
+    ? `<a href="tel:${tel}" style="color:#29271F;text-decoration:none;">${s.phone}</a><span style="color:#B9BCA8;">&nbsp;&nbsp;·&nbsp;&nbsp;</span>`
+    : '';
+  return `<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="font-family:${FONT};max-width:560px;">
+  <tr>
+    <td style="vertical-align:middle;padding:2px 24px 2px 0;">
+      <a href="${s.url}" target="_blank" style="text-decoration:none;"><img src="${SIG_HOST}/img/sig/${s.id}.png" width="${logo.w}" height="${logo.h}" alt="${s.org}" style="display:block;border:0;width:${logo.w}px;height:${logo.h}px;"></a>
+    </td>
+    <td style="vertical-align:middle;border-left:1px solid #D8DCCB;padding:2px 0 2px 24px;">
+      <div style="font-size:16px;line-height:1.3;font-weight:700;color:#29271F;"><span data-f="name">First Last</span></div>
+      <div style="font-size:13px;line-height:1.5;color:#49543E;padding-bottom:10px;"><span data-f="title">Job Title</span> · ${s.orgLine}</div>
+      <div style="font-size:12.5px;line-height:1.8;color:#5C574B;">
+        ${phoneRow}<a href="mailto:${site.email}" style="color:#29271F;text-decoration:none;">${site.email}</a><br>
+        <a href="${s.url}" target="_blank" style="color:#B08D4F;font-weight:600;text-decoration:none;">${s.host}</a><br>
+        <a href="${maps}" target="_blank" style="color:#5C574B;text-decoration:none;">${s.address}</a>
+      </div>
+      <div style="font-size:10.5px;line-height:1;letter-spacing:2px;color:#B08D4F;padding-top:10px;">WARM&nbsp;&nbsp;·&nbsp;&nbsp;SKILLED&nbsp;&nbsp;·&nbsp;&nbsp;PRESENT</div>
+    </td>
+  </tr>
+</table>`;
+}
+
+const nav = [{ href: '/', label: 'Heartwell home' }];
+---
+
+<Layout
+  title={`Email Signatures — ${site.name}`}
+  description="The Heartwell email signature board: one signature per facility, ready to copy."
+  path="/email-signatures"
+  navLinks={nav}
+  contactHref="/#contact"
+  footerLinks={[{ href: '/', label: 'Home' }]}
+  homeHref="/"
+>
+  <section class="sigboard">
+    <div class="wrap">
+      <SectionHeart tone="gold" />
+      <h1 class="h-section">Email <span class="h-em">signatures</span>.</h1>
+      <p class="lead">
+        One signature for corporate and one for each community, in the Heartwell
+        brand. Type the person&rsquo;s name and title, press
+        <strong>Copy signature</strong>, and paste it into the email app&rsquo;s
+        signature box. Every phone number, email, website, and address is a
+        working link.
+      </p>
+
+      <div class="sig-how">
+        <div><b>Gmail</b><span>Settings → See all settings → Signature → paste</span></div>
+        <div><b>Outlook</b><span>Settings → Compose and reply → Signatures → paste</span></div>
+        <div><b>Apple Mail</b><span>Settings → Signatures → paste</span></div>
+      </div>
+
+      <div class="sig-grid">
+        {entries.map((s) => (
+          <article class="sig-card" data-sig={s.id}>
+            <header>
+              <h2>{s.label}</h2>
+              <span>{s.city}</span>
+            </header>
+            <div class="sig-well">
+              <div class="sig-render" set:html={sigHtml(s)} />
+            </div>
+            <div class="sig-fields">
+              <label>Name <input type="text" data-edit="name" value="First Last"></label>
+              <label>Title <input type="text" data-edit="title" value="Job Title"></label>
+            </div>
+            <div class="sig-actions">
+              <button class="btn" data-copy="rich">Copy signature</button>
+              <button class="btn ghost" data-copy="html">Copy HTML</button>
+              <span class="sig-note" role="status" aria-live="polite"></span>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <p class="sig-fine">
+        Recipients without the Hanken Grotesk font see Helvetica or Arial — the
+        layout holds either way. LinkedIn and social icons are left out until
+        the profiles exist; they can be added to any signature in one line.
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.sig-card').forEach((card) => {
+    const render = card.querySelector<HTMLElement>('.sig-render')!;
+    const note = card.querySelector<HTMLElement>('.sig-note')!;
+
+    card.querySelectorAll<HTMLInputElement>('input[data-edit]').forEach((input) => {
+      const span = render.querySelector<HTMLElement>(`[data-f="${input.dataset.edit}"]`)!;
+      input.addEventListener('input', () => {
+        span.textContent = input.value || (input.dataset.edit === 'name' ? 'First Last' : 'Job Title');
+      });
+    });
+
+    const say = (msg: string) => {
+      note.textContent = msg;
+      setTimeout(() => { if (note.textContent === msg) note.textContent = ''; }, 3500);
+    };
+
+    card.querySelectorAll<HTMLButtonElement>('button[data-copy]').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const html = render.firstElementChild!.outerHTML.replace(/ data-f="[^"]*"/g, '');
+        try {
+          if (btn.dataset.copy === 'html') {
+            await navigator.clipboard.writeText(html);
+            say('HTML copied.');
+            return;
+          }
+          if (window.ClipboardItem) {
+            const text = (render.textContent || '').trim();
+            await navigator.clipboard.write([
+              new ClipboardItem({
+                'text/html': new Blob([html], { type: 'text/html' }),
+                'text/plain': new Blob([text], { type: 'text/plain' }),
+              }),
+            ]);
+          } else {
+            const range = document.createRange();
+            range.selectNodeContents(render);
+            const sel = window.getSelection()!;
+            sel.removeAllRanges();
+            sel.addRange(range);
+            document.execCommand('copy');
+            sel.removeAllRanges();
+          }
+          say('Signature copied — paste it into the signature box.');
+        } catch {
+          say('Copy is blocked in this browser — use Copy HTML instead.');
+        }
+      });
+    });
+  });
+</script>

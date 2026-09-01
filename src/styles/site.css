@@ -517,6 +517,52 @@ html.no-anim .reveal,html.no-anim .reveal-hero{opacity:1;transform:none;transiti
 .form-foot{grid-column:1/-1;display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:4px}
 .form-note{font-size:13px;color:var(--ink-soft)}
 
+/* ---------- email signature board (internal, hub only) ---------- */
+.sigboard{padding:180px 0 130px}
+.sigboard .h-section{margin-bottom:18px}
+.sigboard .lead{margin-bottom:34px}
+.sig-how{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:44px;
+}
+.sig-how div{
+  background:var(--sage-mist);border:1px solid rgba(73,84,62,.12);
+  border-radius:16px;padding:14px 18px;font-size:13.5px;
+}
+.sig-how b{display:block;color:var(--sage-deep);margin-bottom:2px}
+.sig-how span{color:var(--ink-soft)}
+.sig-grid{display:grid;grid-template-columns:1fr;gap:26px}
+.sig-card{
+  background:var(--card);border:1px solid var(--line-sage);
+  border-radius:var(--radius);padding:26px 28px 24px;
+}
+.sig-card header{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:16px}
+.sig-card h2{font-size:1.05rem;font-weight:600;letter-spacing:-0.01em;color:var(--sage-deep)}
+.sig-card header span{font-size:12.5px;color:var(--ink-soft)}
+.sig-well{
+  background:#fff;border:1px solid var(--line);border-radius:14px;
+  padding:26px 28px;overflow-x:auto;
+}
+.sig-fields{display:flex;gap:14px;flex-wrap:wrap;margin:18px 0 14px}
+.sig-fields label{
+  display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--ink-soft);
+}
+.sig-fields input{
+  font-family:var(--font);font-size:14px;color:var(--ink);
+  border:1px solid rgba(73,84,62,.28);border-radius:10px;
+  padding:8px 12px;background:#fff;width:200px;
+}
+.sig-fields input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(176,141,79,.16)}
+.sig-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.sig-actions .btn{padding:11px 22px;font-size:14px}
+.sig-note{font-size:13px;color:var(--sage-deep)}
+.sig-fine{margin-top:36px;font-size:13.5px;color:var(--ink-soft);max-width:64ch}
+@media (max-width:760px){
+  .sigboard{padding-top:140px}
+  .sig-how{grid-template-columns:1fr}
+  .sig-card{padding:20px 18px}
+  .sig-well{padding:18px 16px}
+}
+
 /* ---------- footer (the deepest green in the system) ---------- */
 footer{background:var(--forest-deep);color:rgba(247,243,236,.75);overflow:hidden}
 .foot-word{
