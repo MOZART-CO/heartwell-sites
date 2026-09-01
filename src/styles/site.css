@@ -542,6 +542,7 @@ html.no-anim .reveal,html.no-anim .reveal-hero{opacity:1;transform:none;transiti
   background:#fff;border:1px solid var(--line);border-radius:14px;
   padding:26px 28px;overflow-x:auto;
 }
+.sig-well img{max-width:none}
 .sig-fields{display:flex;gap:14px;flex-wrap:wrap;margin:18px 0 14px}
 .sig-fields label{
   display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--ink-soft);
