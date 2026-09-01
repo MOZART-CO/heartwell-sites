@@ -587,9 +587,14 @@ footer{background:var(--forest-deep);color:rgba(247,243,236,.75);overflow:hidden
 .foot-col p{font-size:15px;padding:6px 0}
 .legal{
   display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;
-  padding:26px 0 34px;font-size:13px;color:rgba(247,243,236,.45);
+  padding:26px 0;font-size:13px;color:rgba(247,243,236,.45);
 }
-.legal .mozart{height:30px;width:auto;display:block;color:rgba(247,243,236,.7)}
+.foot-credit{
+  display:flex;justify-content:center;
+  border-top:1px solid rgba(247,243,236,.12);
+  padding:32px 0 42px;
+}
+.foot-credit .mozart{height:30px;width:auto;display:block;color:rgba(247,243,236,.7)}
 
 /* ---------- responsive ---------- */
 @media (max-width:1000px){
